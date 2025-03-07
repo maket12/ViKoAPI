@@ -1,9 +1,10 @@
 from typing import Union
-from session_mixin import SessionMixin
-from wall.filters import WallFilters
-from club.fields import ClubFields
-from user.fields import UserFields
-from exceptions import InvalidCountError, NegativeValueError, UndefinedParameterValue, AmountLimit
+from core.session_mixin import SessionMixin
+from enums.wall.filters import WallFilters
+from enums.club.fields import ClubFields
+from enums.user.fields import UserFields
+from enums.user.sex import Sex
+from errors.exceptions import InvalidCountError, NegativeValueError, UndefinedParameterValue, AmountLimit
 
 
 class StatusMethods(SessionMixin):
@@ -198,7 +199,8 @@ class UsersMethods(SessionMixin):
                fields: [ClubFields] = None, city: int = None, country: int = None,
                hometown: str = None, university_country: int = None, university: int = None,
                university_year: int = None, university_faculty: int = None,
-               university_chair: int = None, sex: str = "any", status: int = None, age_from: int = None,
+               university_chair: int = None, sex: str | Sex = "any",
+               status: int = None, age_from: int = None,
                age_to: int = None, birth_day: int = None, birth_month: int = None, birth_year: int = None,
                is_online: bool = False, has_photo: bool = False, school_country: int = None,
                school_city: int = None, school_class: int = None, school: int = None,
@@ -250,11 +252,11 @@ class UsersMethods(SessionMixin):
             params["university_chair"] = university_chair
 
         match sex:
-            case "any":
+            case "any" | Sex.ANY:
                 params["sex"] = 0
-            case "male":
+            case "male" | Sex.MALE:
                 params["sex"] = 1
-            case "female":
+            case "female" | Sex.FEMALE:
                 params["sex"] = 2
             case _:
                 raise UndefinedParameterValue("sex", sex)

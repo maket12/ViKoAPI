@@ -1,4 +1,4 @@
-from base_session import BaseSession
+from core.base_session import BaseSession
 from methods import WallMethods, StatusMethods, UsersMethods
 
 
