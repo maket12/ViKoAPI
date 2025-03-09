@@ -327,7 +327,7 @@ class UsersMethods(SessionMixin):
         if screen_ref:
             params["screen_ref"] = screen_ref
 
-        return self.request_async("users.search", params)
+        return self.request_async("users_attributes.search", params)
 
     def get(self, user_ids: list, fields: list[UserFields] = None, name_case: str = "nom",
             from_group_id: int = None):
@@ -345,6 +345,6 @@ class UsersMethods(SessionMixin):
         if from_group_id:
             params["from_group_id"] = from_group_id
 
-        return self.request_async("users.get", params)
+        return self.request_async("users_attributes.get", params)
 
 
