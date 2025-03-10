@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.03
+Current Version is 0.06
 
 ---
 # Version 0.03
