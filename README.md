@@ -16,3 +16,8 @@ Class User was completed.
 
 # Version 0.05
 Added class Comment and their subclasses, class Discussion, class VoiceMessage and class Note.
+
+---
+
+# Version 0.06
+Added class Chat and their subclasses, class Post and their subclasses
