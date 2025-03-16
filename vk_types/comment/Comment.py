@@ -1,6 +1,6 @@
 from datetime import datetime
-from types.comment.comments_attributes.Donut import CommentsDonut
-from types.comment.comments_attributes.Thread import CommentsThread
+from vk_types.comment.comments_attributes.Donut import CommentsDonut
+from vk_types.comment.comments_attributes.Thread import CommentsThread
 
 
 class Comment:

@@ -27,6 +27,10 @@ class StatusMethods(SessionMixin):
             params = {}
         return self.request_async("status.get", params)
 
+    def get_my(self):
+        params = {}
+        return self.request_async("status.get", params)
+
 
 class GroupsMethods(SessionMixin):
     def get_by_id(self, group_ids: list, fields: [ClubFields] = None):
@@ -346,5 +350,3 @@ class UsersMethods(SessionMixin):
             params["from_group_id"] = from_group_id
 
         return self.request_async("users_attributes.get", params)
-
-

@@ -1,11 +1,11 @@
 from datetime import datetime
 from enums.post.type import PostType
-from types.post.post_attributes.Comments import PostsComments
-from types.post.post_attributes.Copyright import PostsCopyright
-from types.post.post_attributes.Likes import PostsLikes
-from types.post.post_attributes.Reposts import PostsReposts
-from types.post.post_attributes.Source import PostsSource
-from types.post.post_attributes.Geo import PostsGeo
+from vk_types.post.post_attributes.Comments import PostsComments
+from vk_types.post.post_attributes.Copyright import PostsCopyright
+from vk_types.post.post_attributes.Likes import PostsLikes
+from vk_types.post.post_attributes.Reposts import PostsReposts
+from vk_types.post.post_attributes.Source import PostsSource
+from vk_types.post.post_attributes.Geo import PostsGeo
 
 
 class Post:

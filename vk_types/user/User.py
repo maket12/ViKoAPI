@@ -4,22 +4,22 @@ from enums.user.friend_status import FriendStatus
 from enums.user.relation import RelationStatus
 from enums.user.sex import Sex
 from enums.user.wall_default import WallDefault
-from types.user.users_attributes.Carrer import UsersCareer
-from types.user.users_attributes.City import UsersCity
-from types.user.users_attributes.Contacts import UsersContacts
-from types.user.users_attributes.Connection import UsersConnection
-from types.user.users_attributes.Counters import UsersCounters
-from types.user.users_attributes.Country import UsersCountry
-from types.user.users_attributes.Education import UsersEducation
-from types.user.users_attributes.NameCases import UsersNameCases
-from types.user.users_attributes.SurnameCases import UsersSurnameCases
-from types.user.users_attributes.LastSeen import UsersLastSeen
-from types.user.users_attributes.Military import UsersMilitary
-from types.user.users_attributes.Occupation import UsersOccupation
-from types.user.users_attributes.Personal import UsersPersonal
-from types.user.users_attributes.Relative import UsersRelative
-from types.user.users_attributes.School import UsersSchool
-from types.user.users_attributes.University import UsersUniversity
+from vk_types.user.users_attributes.Carrer import UsersCareer
+from vk_types.user.users_attributes.City import UsersCity
+from vk_types.user.users_attributes.Contacts import UsersContacts
+from vk_types.user.users_attributes.Connection import UsersConnection
+from vk_types.user.users_attributes.Counters import UsersCounters
+from vk_types.user.users_attributes.Country import UsersCountry
+from vk_types.user.users_attributes.Education import UsersEducation
+from vk_types.user.users_attributes.NameCases import UsersNameCases
+from vk_types.user.users_attributes.SurnameCases import UsersSurnameCases
+from vk_types.user.users_attributes.LastSeen import UsersLastSeen
+from vk_types.user.users_attributes.Military import UsersMilitary
+from vk_types.user.users_attributes.Occupation import UsersOccupation
+from vk_types.user.users_attributes.Personal import UsersPersonal
+from vk_types.user.users_attributes.Relative import UsersRelative
+from vk_types.user.users_attributes.School import UsersSchool
+from vk_types.user.users_attributes.University import UsersUniversity
 
 
 class User:

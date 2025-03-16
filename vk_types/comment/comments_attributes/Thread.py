@@ -1,4 +1,4 @@
-from types.comment.Comment import Comment
+from vk_types.comment.Comment import Comment
 
 
 class CommentsThread:
