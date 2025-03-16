@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.06
+Current Version is 0.07
 
 ---
 # Version 0.03
@@ -21,3 +21,8 @@ Added class Comment and their subclasses, class Discussion, class VoiceMessage a
 
 # Version 0.06
 Added class Chat and their subclasses, class Post and their subclasses
+
+---
+
+# Version 0.07
+Added exceptions based on VK API errors. Some refactoring have done.

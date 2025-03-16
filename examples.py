@@ -1,8 +1,8 @@
 from client import ViKoClient
+from config import user_token
 
 # user_token = "INSERT_YOUR_TOKEN_HERE"
 
-user_token = "vk1.a.CLHIYVRhdmT7S9mvXQbTI8oKFQL5xuqRV-VISc95hIqnVYha42fEwfFfTdu4mj4Kb1sOwbadgv5VOgFy0p7byKuN6TsUjDnhhJNFZkJ2qm0TA4offInyOWgfPqSfek3iX1xQD9_HBJWvHqPNC8-kWobphPTudAqywofPea3dX2GWLATKrDIunk4nrepiUR2CqguCBiCBNbk4mwjwbZ32Q"
 
 vk_client = ViKoClient(api_token=user_token)
 
