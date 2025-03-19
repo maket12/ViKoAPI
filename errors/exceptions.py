@@ -2,6 +2,11 @@ class ViKoAPIError(Exception):
     pass
 
 
+class ClientParamsEmpty(ViKoAPIError):
+    def __init__(self):
+        super().__init__("You can't create client object without any parameter.")
+
+
 class InvalidCountError(ViKoAPIError):
     """
     For methods wall.get and wall.getComments

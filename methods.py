@@ -33,7 +33,7 @@ class StatusMethods(SessionMixin):
 
 
 class GroupsMethods(SessionMixin):
-    def get_by_id(self, group_ids: list, fields: [ClubFields] = None):
+    def get_by_id(self, group_ids: list, fields: [ClubFields] | str = None):
         params = {}
         groups_length = len(group_ids)
         if groups_length == 0:
@@ -84,9 +84,9 @@ class GroupsMethods(SessionMixin):
 class WallMethods(SessionMixin):
     def get(self, owner_id: int = None, domain: str = None,
             offset: int = None, count: int = None,
-            wall_filter: WallFilters = WallFilters.ALL,
+            wall_filter: WallFilters | str = WallFilters.ALL,
             extended: bool = False,
-            fields: Union[list[ClubFields], list[UserFields]] = None):
+            fields: Union[list[ClubFields], list[UserFields]] | str = None):
         params = {}
         if owner_id:
             params["owner_id"] = owner_id
@@ -109,7 +109,7 @@ class WallMethods(SessionMixin):
         return self.request_async("wall.get", params)
 
     def get_comment(self, owner_id: int, comment_id: int, extended: bool = False,
-                    fields: Union[list[ClubFields], list[UserFields]] = None):
+                    fields: Union[list[ClubFields], list[UserFields]] | str = None):
         if comment_id <= 0:
             raise NegativeValueError("comment_id", comment_id)
 
@@ -129,7 +129,7 @@ class WallMethods(SessionMixin):
                      need_likes: bool = False, start_comment_id: int = None,
                      offset: int = None, count: int = 10,
                      sort: int = -1, preview_length: int = 0,
-                     extended: bool = False, fields: Union[list[ClubFields], list[UserFields]] = None,
+                     extended: bool = False, fields: Union[list[ClubFields], list[UserFields]] | str = None,
                      comment_id: int = None, thread_items_count: int = None):
         """
                 sort = -1 - desc(from newest to oldest)
@@ -179,7 +179,7 @@ class WallMethods(SessionMixin):
         return self.request_async("wall.getComments", params)
 
     def get_reposts(self, owner_id: int, post_id: int,
-                         offset: int = None, count: int = None):
+                    offset: int = None, count: int = None):
         params = {"owner_id": owner_id, }
 
         if post_id <= 0:
@@ -331,7 +331,7 @@ class UsersMethods(SessionMixin):
         if screen_ref:
             params["screen_ref"] = screen_ref
 
-        return self.request_async("users_attributes.search", params)
+        return self.request_async("users.search", params)
 
     def get(self, user_ids: list, fields: list[UserFields] = None, name_case: str = "nom",
             from_group_id: int = None):
@@ -349,4 +349,102 @@ class UsersMethods(SessionMixin):
         if from_group_id:
             params["from_group_id"] = from_group_id
 
-        return self.request_async("users_attributes.get", params)
+        return self.request_async("users.get", params)
+
+    def get_followers(self, user_id: int, offset: int = None, count: int = None,
+                      fields: list[UserFields] = None, name_case: str = "nom"):
+        params = {
+            "user_id": user_id
+        }
+
+        if offset < 0:
+            raise NegativeValueError("offset", offset)
+        if count < 0:
+            raise NegativeValueError("count", count)
+        params["offset"] = offset
+        params["count"] = count
+
+        if fields:
+            fields_str = ""
+            for field in fields:
+                fields_str += ',' if fields_str else None
+                fields_str += str(field)
+            params["fields"] = fields_str
+
+        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
+            params["name_case"] = name_case
+        else:
+            raise UndefinedParameterValue("name_case", name_case)
+
+        return self.request_async("users.getFollowers", params)
+
+    def get_my_followers(self, offset: int = None, count: int = None,
+                         fields: list[UserFields] = None, name_case: str = "nom"):
+        params = {}
+
+        if offset:
+            if offset < 0:
+                raise NegativeValueError("offset", offset)
+            params["offset"] = offset
+        if count:
+            if count < 0:
+                raise NegativeValueError("count", count)
+            params["count"] = count
+
+        if fields:
+            fields_str = ""
+            for field in fields:
+                fields_str += ',' if fields_str else None
+                fields_str += str(field)
+            params["fields"] = fields_str
+
+        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
+            params["name_case"] = name_case
+        else:
+            raise UndefinedParameterValue("name_case", name_case)
+
+        return self.request_async("users.getFollowers", params)
+
+    def report(self, user_id: int, report_type: str, comment: str = None):
+        params = {
+            "user_id": user_id,
+            "type": report_type
+        }
+
+        if comment:
+            params["comment"] = comment
+
+        return self.request_async("users.report", params)
+
+
+class Gifts(SessionMixin):
+    def get(self, user_id: int, count: int = None, offset: int = None):
+        params = {
+            "user_id": user_id
+        }
+
+        if count:
+            if count < 0:
+                raise NegativeValueError("count", count)
+            params["count"] = count
+        if offset:
+            if offset < 0:
+                raise NegativeValueError("offset", offset)
+            params["offset"] = offset
+
+        return self.request_async("gifts.get", params)
+
+    def get_my(self, count: int = None, offset: int = None):
+        params = {}
+
+        if count:
+            if count < 0:
+                raise NegativeValueError("count", count)
+            params["count"] = count
+        if offset:
+            if offset < 0:
+                raise NegativeValueError("offset", offset)
+            params["offset"] = offset
+
+        return self.request_async("gifts.get", params)
+

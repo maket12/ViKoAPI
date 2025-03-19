@@ -3,7 +3,6 @@ from config import user_token
 
 # user_token = "INSERT_YOUR_TOKEN_HERE"
 
-
 vk_client = ViKoClient(api_token=user_token)
 
 
@@ -19,9 +18,9 @@ async def status_tests():
     await vk_client.status.set(text="I'm the new group status!", group_id="some_group_id")
 
 
-async def wall_test():
+async def wall_tests():
     wall_posts = await vk_client.wall.get()  # get your wall
-    other_wall_posts = await vk_client.wall.get(owner_id="some_uid")  # get users_status
+    other_wall_posts = await vk_client.wall.get(owner_id="some_uid")  # get users wall
 
 
 async def user_test():

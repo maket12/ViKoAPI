@@ -5,7 +5,7 @@ from methods import WallMethods, StatusMethods, UsersMethods
 
 
 class ViKoClient:
-    def __init__(self, api_token: str, api_version: str = "5.199"):
+    def __init__(self, api_token: str = None, api_version: str = "5.199"):
         self._session = BaseSession(api_token, api_version)
         self._session.set_middleware(ResponseMiddleware(ObjectFactory()))
         self.wall = WallMethods(self._session)
