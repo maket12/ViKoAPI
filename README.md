@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.08
+Current Version is 0.09
 
 ---
 # Version 0.03
@@ -31,3 +31,8 @@ Added exceptions based on VK API errors. Some refactoring have done.
 
 # Version 0.08
 Added class GiftItem and his subclass Gift. Added gift methods.
+
+---
+
+# Version 0.09
+Some refactoring was done. Typing issues were fixed.

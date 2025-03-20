@@ -1,7 +1,7 @@
 from core.base_session import BaseSession
 from core.object_factory import ObjectFactory
 from core.response_middleware import ResponseMiddleware
-from methods import WallMethods, StatusMethods, UsersMethods
+from methods import *
 
 
 class ViKoClient:
@@ -11,6 +11,7 @@ class ViKoClient:
         self.wall = WallMethods(self._session)
         self.status = StatusMethods(self._session)
         self.users = UsersMethods(self._session)
+        self.gifts = GiftsMethods(self._session)
 
     def __getattr__(self, name):
         if hasattr(self.methods, name):

@@ -1,10 +1,11 @@
-from typing import Union
+from typing import Union, Coroutine, Any
 from core.session_mixin import SessionMixin
 from enums.wall.filters import WallFilters
 from enums.club.fields import ClubFields
 from enums.user.fields import UserFields
 from enums.user.sex import Sex
 from errors.exceptions import InvalidCountError, NegativeValueError, UndefinedParameterValue, AmountLimit
+from vk_types.gift_item.GiftItem import GiftItem
 
 
 class StatusMethods(SessionMixin):
@@ -16,7 +17,7 @@ class StatusMethods(SessionMixin):
             params["group_id"] = group_id
         return self.request_async("status.set", params)
 
-    def get(self, user_id: int = None, group_id: int = None):
+    def get(self, user_id: int = None, group_id: int = None) -> Coroutine[Any, Any, str]:
         if user_id:
             params = {"user_id": user_id}
         elif group_id:
@@ -27,13 +28,13 @@ class StatusMethods(SessionMixin):
             params = {}
         return self.request_async("status.get", params)
 
-    def get_my(self):
+    def get_my(self) -> Coroutine[Any, Any, str]:
         params = {}
-        return self.request_async("status.get", params)
+        return self.request_async("status.get_my", params)
 
 
 class GroupsMethods(SessionMixin):
-    def get_by_id(self, group_ids: list, fields: [ClubFields] | str = None):
+    def get_by_id(self, group_ids: list, fields: list[ClubFields] | str = None):
         params = {}
         groups_length = len(group_ids)
         if groups_length == 0:
@@ -417,8 +418,8 @@ class UsersMethods(SessionMixin):
         return self.request_async("users.report", params)
 
 
-class Gifts(SessionMixin):
-    def get(self, user_id: int, count: int = None, offset: int = None):
+class GiftsMethods(SessionMixin):
+    def get(self, user_id: int, count: int = None, offset: int = None) -> Coroutine[Any, Any, list[GiftItem]]:
         params = {
             "user_id": user_id
         }
@@ -434,7 +435,7 @@ class Gifts(SessionMixin):
 
         return self.request_async("gifts.get", params)
 
-    def get_my(self, count: int = None, offset: int = None):
+    def get_my(self, count: int = None, offset: int = None) -> Coroutine[Any, Any, list[GiftItem]]:
         params = {}
 
         if count:

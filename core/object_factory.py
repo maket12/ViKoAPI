@@ -1,5 +1,6 @@
 from vk_types.user.User import User
 from vk_types.chat.Chat import Chat
+from vk_types.gift_item.GiftItem import GiftItem, Gift
 
 
 class ObjectFactory:
@@ -23,4 +24,34 @@ class ObjectFactory:
             "was_left": bool(data.get("left")),
             "was_kicked": bool(data.get("kicked"))
         }
-        return Chat(**data)
+        return Chat(**mapped_data)
+
+    @staticmethod
+    def create_gift_items(items: list):
+        result = []
+        for item in items:
+            gift_item = ObjectFactory.create_gift_item(item)
+            result.append(gift_item)
+        return result
+
+    @staticmethod
+    def create_gift_item(data: dict) -> GiftItem:
+        mapped_data = {
+            "gift_item_id": data.get("id"),
+            "from_user_id": data.get("from_id"),
+            "message": data.get("message"),
+            "unix_date": data.get("date"),
+            "gift": ObjectFactory.create_gift(data.get("gift")),
+            "privacy": data.get("privacy")
+        }
+        return GiftItem(**mapped_data)
+
+    @staticmethod
+    def create_gift(data: dict) -> Gift:
+        mapped_data = {
+            "gift_id": data.get("id"),
+            "thumb_256": data.get("thumb_256"),
+            "thumb_96": data.get("thumb_96"),
+            "thumb_48": data.get("thumb_48")
+        }
+        return Gift(**mapped_data)

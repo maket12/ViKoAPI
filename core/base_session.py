@@ -1,9 +1,12 @@
+from typing import overload, Literal
+
 import requests
 import aiohttp
 import webbrowser
 import base64
 from core.response_middleware import ResponseMiddleware
 from errors.exceptions import ClientParamsEmpty
+from vk_types.gift_item.GiftItem import GiftItem
 
 
 class BaseSession:
@@ -81,4 +84,4 @@ class BaseSession:
             params.update({"access_token": self.api_token, "v": self.api_version})
             async with session.get(self.BASE_URL + method, params=params) as response:
                 data = await response.json()
-                return self.middleware.process(method, data) if self.middleware else data
+                return self.middleware.process(method, data) #if self.middleware else data
