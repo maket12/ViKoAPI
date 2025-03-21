@@ -114,3 +114,9 @@ class GroupAccessError(ViKoAPIResponseError):
     """Cannot get access to this group(you're not a member or an administrator"""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(203, error_msg, request_params)
+
+
+class ContentBlockedError(ViKoAPIResponseError):
+    """Perhaps the group or user was blocked."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(19, error_msg, request_params)

@@ -8,6 +8,11 @@ from errors.exceptions import InvalidCountError, NegativeValueError, UndefinedPa
 from vk_types.gift_item.GiftItem import GiftItem
 
 
+class RawMethod(SessionMixin):
+    def method(self, method_name: str, params: dict):
+        return self.request_async(method_name, params)
+
+
 class StatusMethods(SessionMixin):
     def set(self, text: str, group_id: int = None):
         params = {"text": text}
@@ -197,6 +202,16 @@ class WallMethods(SessionMixin):
             params["count"] = count
 
         return self.request_async("wall.getReposts", params)
+
+    def pin(self, owner_user_id: int, post_id: int):
+        if post_id < 0:
+            raise NegativeValueError("post_id", post_id)
+
+        params = {
+            "owner_id": owner_user_id,
+            "post_id": post_id
+        }
+        return self.request_async("wall.pin", params)
 
 
 class UsersMethods(SessionMixin):

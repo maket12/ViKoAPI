@@ -6,18 +6,20 @@ from vk_types.post.post_attributes.Likes import PostsLikes
 from vk_types.post.post_attributes.Reposts import PostsReposts
 from vk_types.post.post_attributes.Source import PostsSource
 from vk_types.post.post_attributes.Geo import PostsGeo
+from vk_types.post.post_attributes.Donut import PostsDonut
 
 
 class Post:
     def __init__(self, post_id: int, owner_user_id: int | None, from_user_id: int | None,
                  created_by_user_id: int | None, date_unix: int, text: str,
                  reply_owner_user_id: int | None, reply_post_id: int | None,
-                 for_friends_only: bool, comments: PostsComments, copyright: PostsCopyright,
-                 likes: PostsLikes, reposts: PostsReposts, amount_of_views: int,
+                 for_friends_only: bool, comments: PostsComments | None, copyright: PostsCopyright,
+                 likes: PostsLikes | None, reposts: PostsReposts | None, views: int,
                  post_type: PostType, post_source: PostsSource | None, signer_user_id: int | None,
                  attachments: object | None, geo: PostsGeo | None, reposts_history: list['Post'] | None,
                  can_pin: bool, can_delete: bool, can_edit: bool,
-                 is_pinned: bool, is_add: bool, is_favorite: bool, postponed_id: int | None):
+                 is_pinned: bool, is_add: bool, is_favorite: bool, donut: PostsDonut | None,
+                 postponed_id: int | None):
         """
         Represents the Post object
 
@@ -34,7 +36,7 @@ class Post:
         :param copyright: Information about the source of the material
         :param likes: Information about likes to the post
         :param reposts: Information about reposts of the post
-        :param amount_of_views: Number of views of the post
+        :param views: Number of views of the post
         :param post_type: Type of post (PostType)
         :param post_source: Information about the method of post publication
         :param signer_user_id: ID of the author if the post is published on behalf of the community
@@ -47,6 +49,7 @@ class Post:
         :param is_pinned: Whether the post is pinned
         :param is_add: Whether the post is added to bookmarks
         :param is_favorite: Whether the post is added to favorites
+        :param donut: Info about VK Donut
         :param postponed_id: ID of the postponed post
         """
         self.post_id = post_id
@@ -62,7 +65,7 @@ class Post:
         self.copyright = copyright
         self.likes = likes
         self.reposts = reposts
-        self.amount_of_views = amount_of_views
+        self.views = views
         self.post_type = post_type
         self.post_source = post_source
         self.attachments = attachments
@@ -75,4 +78,5 @@ class Post:
         self.is_pinned = is_pinned
         self.is_favorite = is_favorite
         self.is_add = is_add
+        self.donut = donut
         self.postponed_id = postponed_id
