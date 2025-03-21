@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.1
+Current Version is 0.11
 
 ---
 # Version 0.03
@@ -41,3 +41,8 @@ Some refactoring was done. Typing issues were fixed.
 
 # Version 0.1
 Added some exceptions, raw_methods are available.
+
+---
+
+# Version 0.11
+Added proxies supporting.
