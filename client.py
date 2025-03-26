@@ -1,7 +1,13 @@
 from core.base_session import BaseSession
 from core.object_factory import ObjectFactory
 from core.response_middleware import ResponseMiddleware
-from methods import *
+from methods.raw import RawMethod
+from methods.status import StatusMethods
+from methods.users import UsersMethods
+from methods.wall import WallMethods
+from methods.friends import FriendsMethods
+from methods.groups import GroupsMethods
+from methods.gifts import GiftsMethods
 
 
 class ViKoClient:
@@ -10,6 +16,7 @@ class ViKoClient:
         self._session.set_middleware(ResponseMiddleware(ObjectFactory()))
         self.raw = RawMethod(self._session)
         self.wall = WallMethods(self._session)
+        self.groups = GroupsMethods(self._session)
         self.status = StatusMethods(self._session)
         self.users = UsersMethods(self._session)
         self.friends = FriendsMethods(self._session)

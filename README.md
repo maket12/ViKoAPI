@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.12
+Current Version is 0.13
 
 ---
 # Version 0.03
@@ -51,3 +51,8 @@ Added proxies supporting.
 
 # Version 0.12
 Released all Friends methods.
+
+---
+
+# Version 0.13
+Some refactoring was done. Now methods are moved on files, each method class has own file.
