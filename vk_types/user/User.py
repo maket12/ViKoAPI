@@ -49,7 +49,8 @@ class User:
                  schools: list[UsersSchool] | None, screen_name: str | None, sex: Sex | None,
                  site: str | None, status: str | None, status_audio: str | None, timezone: int | None,
                  trending: bool | None, tv: str | None, universities: list[UsersUniversity] | None,
-                 is_verified: bool | None, wall_default: WallDefault | None):
+                 is_verified: bool | None, wall_default: WallDefault | None,
+                 found_with: str | None):
         """
         :param user_id:
         :param first_name:
@@ -209,6 +210,8 @@ class User:
         self.universities = universities
         self.is_verified = is_verified
         self.wall_default = wall_default
+
+        self.found_with = found_with
 
         self.age = self.count_age()
 

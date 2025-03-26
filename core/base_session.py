@@ -27,7 +27,7 @@ class BaseSession:
         if self.proxy:
             self.check_proxy()
 
-    def check_proxy(self, test_url: str = "https://www.google.com", timeout: int = 10):
+    async def check_proxy(self, test_url: str = "https://www.google.com", timeout: int = 10):
         try:
             connector = aiohttp.TCPConnector(ssl=False)
             async with aiohttp.ClientSession(connector=connector) as session:

@@ -24,6 +24,18 @@ class NegativeValueError(ViKoAPIError):
         self.value = value
 
 
+class InvalidUserID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid user_id: {value}")
+        self.value = value
+
+
+class InvalidGroupID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid group_id: {value}")
+        self.value = value
+
+
 class UndefinedParameterValue(ViKoAPIError):
     def __init__(self, parameter_name: str, value: any):
         super().__init__(f"Parameter {parameter_name} cannot be {value}.")
@@ -36,6 +48,12 @@ class AmountLimit(ViKoAPIError):
         super().__init__(f"Amount of {parameter_name} cannot be greater than {limit}.")
         self.parameter = parameter_name
         self.limit = limit
+
+
+class TooLongText(ViKoAPIError):
+    def __init__(self, text_length: int):
+        super().__init__(f"Length of the text cannot be greater than 500 symbols.")
+        self.text_length = text_length
 
 
 class ViKoAPIResponseError(ViKoAPIError):
@@ -68,13 +86,13 @@ class RateLimitError(ViKoAPIResponseError):
         super().__init__(6, error_msg, request_params)
 
 
-class ProfileDeletedError(ViKoAPIResponseError):
+class ProfileDeleted(ViKoAPIResponseError):
     """User was deleted or blocked"""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(18, error_msg, request_params)
 
 
-class ApiAppOffError(ViKoAPIResponseError):
+class ApiAppOff(ViKoAPIResponseError):
     """Check your api access app is not off"""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(2, error_msg, request_params)
@@ -98,7 +116,7 @@ class TestAppError(ViKoAPIResponseError):
         super().__init__(11, error_msg, request_params)
 
 
-class MethodUnavailableError(ViKoAPIResponseError):
+class MethodUnavailable(ViKoAPIResponseError):
     """This method is unavailable for this moment"""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(23, error_msg, request_params)
@@ -116,7 +134,50 @@ class GroupAccessError(ViKoAPIResponseError):
         super().__init__(203, error_msg, request_params)
 
 
-class ContentBlockedError(ViKoAPIResponseError):
+class ContentBlocked(ViKoAPIResponseError):
     """Perhaps the group or user was blocked."""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(19, error_msg, request_params)
+
+
+class InvalidListId(ViKoAPIResponseError):
+    """Invalid list id."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(171, error_msg, request_params)
+
+
+class MaximumListNumber(ViKoAPIResponseError):
+    """Reached the maximum number of lists."""
+
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(173, error_msg, request_params)
+
+
+class CannotAddYourself(ViKoAPIResponseError):
+    """Cannot add yourself as friend."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(174, error_msg, request_params)
+
+
+class BlacklistedError(ViKoAPIResponseError):
+    """Cannot add this user to friends as they have put you on their blacklist."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(175, error_msg, request_params)
+
+
+class UserBlacklistedError(ViKoAPIResponseError):
+    """Cannot add this user to friends as you put him on blacklist."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(176, error_msg, request_params)
+
+
+class UserNotFound(ViKoAPIResponseError):
+    """Cannot add this user to friends as user not found."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(177, error_msg, request_params)
+
+
+class TooManyFriends(ViKoAPIResponseError):
+    """Too many friends."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(242, error_msg, request_params)

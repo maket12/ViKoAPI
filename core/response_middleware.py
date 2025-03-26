@@ -26,7 +26,7 @@ class ResponseMiddleware:
                 case 1:
                     raise UnknownError(error_msg=error_msg, request_params=request_params)
                 case 2:
-                    raise ApiAppOffError(error_msg=error_msg, request_params=request_params)
+                    raise ApiAppOff(error_msg=error_msg, request_params=request_params)
                 case 5:
                     raise AuthorisationError(error_msg=error_msg, request_params=request_params)
                 case 6:
@@ -38,15 +38,29 @@ class ResponseMiddleware:
                 case 11:
                     raise TestAppError(error_msg=error_msg, request_params=request_params)
                 case 18:
-                    raise ProfileDeletedError(error_msg=error_msg, request_params=request_params)
+                    raise ProfileDeleted(error_msg=error_msg, request_params=request_params)
                 case 19:
-                    raise ContentBlockedError(error_msg=error_msg, request_params=request_params)
+                    raise ContentBlocked(error_msg=error_msg, request_params=request_params)
                 case 23:
-                    raise MethodUnavailableError(error_msg=error_msg, request_params=request_params)
+                    raise MethodUnavailable(error_msg=error_msg, request_params=request_params)
                 case 30:
                     raise PrivateProfileError(error_msg=error_msg, request_params=request_params)
+                case 171:
+                    raise InvalidListId(error_msg=error_msg, request_params=request_params)
+                case 173:
+                    raise MaximumListNumber(error_msg=error_msg, request_params=request_params)
+                case 174:
+                    raise CannotAddYourself(error_msg=error_msg, request_params=request_params)
+                case 175:
+                    raise BlacklistedError(error_msg=error_msg, request_params=request_params)
+                case 176:
+                    raise UserBlacklistedError(error_msg=error_msg, request_params=request_params)
+                case 177:
+                    raise UserNotFound(error_msg=error_msg, request_params=request_params)
                 case 203:
                     raise GroupAccessError(error_msg=error_msg, request_params=request_params)
+                case 242:
+                    raise TooManyFriends(error_msg=error_msg, request_params=request_params)
                 case _:
                     raise ViKoAPIResponseError(error_code=error_code, error_msg=error_msg,
                                                request_params=request_params)
@@ -63,6 +77,28 @@ class ResponseMiddleware:
         match method:
             case "status.get":
                 return data["text"]
+            case "friends.add":
+                return int(data)
+            case "friends.addList":
+                return data["list_id"]
+            case "friends.getLists":
+                return self.object_factory.create_friend_lists(data.get("items"))
+            case "friends.getOnline":
+                return self.object_factory.create_online_friends(data)
+            # case "friends.getRecent":
+            #     return data
+            case "friends.areFriends":
+                return self.object_factory.create_friendships(data)
+            case "friends.deleteAllRequests":
+                return
+            case "friends.getMutual":
+                return self.object_factory.create_mutual_friends(data)
+            case "friends.getRequests":
+                return self.object_factory.create_friend_requests(data.get("items"))
+            case "friends.getSuggestions":
+                return self.object_factory.create_users(data.get("items"))
+            case "friends.search":
+                return  # something
             case "groups.search":
                 return
             case "wall.get":

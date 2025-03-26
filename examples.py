@@ -23,11 +23,17 @@ async def wall_tests():
     other_wall_posts = await vk_client.wall.get(owner_id=1234)  # get users wall
 
 
-async def user_test():
-    gifts = await vk_client.gifts.get_my(count=5)
+async def friends_test():
+    suggestions = await vk_client.friends.get_my_suggestions(count=5)  # get first 5 friend suggestions
 
-    for gif in gifts:
-        print(gif.datetime)
+
+async def user_test():
+    friends = await vk_client.friends.get_my_recent()
+    print(friends)
+    # gifts = await vk_client.gifts.get_my(count=5)
+
+    # for gif in gifts:
+    #     print(gif.datetime)
 
 
 import asyncio
