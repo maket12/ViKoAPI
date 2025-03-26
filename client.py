@@ -8,6 +8,7 @@ from methods.wall import WallMethods
 from methods.friends import FriendsMethods
 from methods.groups import GroupsMethods
 from methods.gifts import GiftsMethods
+from methods.likes import LikesMethods
 
 
 class ViKoClient:
@@ -21,6 +22,7 @@ class ViKoClient:
         self.users = UsersMethods(self._session)
         self.friends = FriendsMethods(self._session)
         self.gifts = GiftsMethods(self._session)
+        self.likes = LikesMethods(self._session)
 
     def __getattr__(self, name):
         if hasattr(self.methods, name):

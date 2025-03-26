@@ -9,6 +9,7 @@ from vk_types.gift_item.GiftItem import GiftItem, Gift
 from vk_types.friends.friendship.Friendship import Friendship
 from vk_types.friends.friend_list.FriendList import FriendList
 from vk_types.friends.mutual_friend.MutualFriend import MutualFriend
+from vk_types.reaction.Reaction import Reaction
 
 
 class ObjectFactory:
@@ -117,6 +118,33 @@ class ObjectFactory:
                 for mutual_friend_id in mutual_friends_ids:
                     mutual_friend = MutualFriend(mutual_friend_id, None, target_user_id)
                     result.append(mutual_friend)
+        return result
+
+    @staticmethod
+    def create_reaction(data: dict) -> Reaction:
+        mapped_data = {
+            "reaction_id": data.get("id"),
+            "count": data.get("count")
+        }
+        return Reaction(**mapped_data)
+
+    @staticmethod
+    def create_reactions(items: list) -> list[Reaction]:
+        result = []
+        for item in items:
+            reaction = ObjectFactory.create_reaction(item)
+            result.append(reaction)
+        return result
+
+    @staticmethod
+    def create_likes_list(items: list) -> list[int] | list[User]:
+        result = []
+        if isinstance(items[0], int):
+            return items
+        else:
+            for item in items:
+                user = ObjectFactory.create_user(item)
+                result.append(user)
         return result
 
     @staticmethod

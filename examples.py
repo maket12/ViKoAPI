@@ -27,9 +27,17 @@ async def friends_test():
     suggestions = await vk_client.friends.get_my_suggestions(count=5)  # get first 5 friend suggestions
 
 
+async def likes_test():
+    # is_liked = await vk_client.likes.check_post(post_id=2431591, owner_id=1)
+    likes = await vk_client.likes.get(object_type="post", item_id=2431591, owner_id=1)
+    print(likes)
+    print(len(likes))
+
+
 async def user_test():
-    friends = await vk_client.friends.get_my_recent()
-    print(friends)
+    pass
+    # friends = await vk_client.friends.get_my_recent()
+    # print(friends)
     # gifts = await vk_client.gifts.get_my(count=5)
 
     # for gif in gifts:
@@ -37,6 +45,6 @@ async def user_test():
 
 
 import asyncio
-asyncio.run(user_test())
+asyncio.run(likes_test())
 
 

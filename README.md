@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.13
+Current Version is 0.14
 
 ---
 # Version 0.03
@@ -56,3 +56,8 @@ Released all Friends methods.
 
 # Version 0.13
 Some refactoring was done. Now methods are moved on files, each method class has own file.
+
+---
+
+# Version 0.14
+All Likes methods was released.

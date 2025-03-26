@@ -99,6 +99,12 @@ class ResponseMiddleware:
                 return self.object_factory.create_users(data.get("items"))
             case "friends.search":
                 return  # something
+            case "likes.add" | "likes.delete":
+                return self.object_factory.create_reactions(data.get("items"))
+            case "likes.getList":
+                return self.object_factory.create_likes_list(data.get("items"))
+            case "likes.isLiked":
+                return bool(data.get("liked")), bool(data.get("copied"))
             case "groups.search":
                 return
             case "wall.get":
