@@ -181,3 +181,9 @@ class TooManyFriends(ViKoAPIResponseError):
     """Too many friends."""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(242, error_msg, request_params)
+
+
+class SpecifiedLinkIncorrect(ViKoAPIResponseError):
+    """Specified link is incorrect (can't find source)."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(3102, error_msg, request_params)

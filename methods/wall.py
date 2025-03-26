@@ -7,6 +7,19 @@ from errors.exceptions import *
 
 
 class WallMethods(SessionMixin):
+    def check_link(self, link: str) -> Coroutine[Any, Any, bool]:
+        params = {"link": link}
+        return self.request_async("wall.checkCopyrightLink", params)
+
+    def close_comments(self, owner_id: int, post_id: int):
+        params = {"owner_id": owner_id}
+
+        if post_id <= 0:
+            raise NegativeValueError("post_id", post_id)
+        params["post_id"] = post_id
+
+        return self.request_async("wall.closeComments", params)
+
     def get(self, owner_id: int = None, domain: str = None,
             offset: int = None, count: int = None,
             wall_filter: WallFilters | str = WallFilters.ALL,

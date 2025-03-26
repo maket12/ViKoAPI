@@ -61,6 +61,8 @@ class ResponseMiddleware:
                     raise GroupAccessError(error_msg=error_msg, request_params=request_params)
                 case 242:
                     raise TooManyFriends(error_msg=error_msg, request_params=request_params)
+                case 3102:
+                    raise SpecifiedLinkIncorrect(error_msg=error_msg, request_params=request_params)
                 case _:
                     raise ViKoAPIResponseError(error_code=error_code, error_msg=error_msg,
                                                request_params=request_params)
@@ -109,6 +111,8 @@ class ResponseMiddleware:
                 return
             case "wall.get":
                 return self.object_factory.create_posts(data.get("items"))
+            case "wall.checkCopyrightLink" | "wall.closeComments":
+                return True
             case "gifts.get":
                 return self.object_factory.create_gift_items(data.get("items"))
             case _:
