@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.15
+Current Version is 0.16
 
 ---
 # Version 0.03
@@ -66,3 +66,8 @@ All Likes methods was released.
 
 # Version 0.15
 Added some new methods in class Wall. New type Photo was released.
+
+---
+
+# Version 0.16
+New type Audio was released.
