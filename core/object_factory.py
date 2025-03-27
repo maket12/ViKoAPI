@@ -5,7 +5,7 @@ from vk_types.post.Post import (
         PostsComments, PostsReposts, PostsGeo, PostsSource)
 from vk_types.post.post_attributes.Place import GeoPlace
 from vk_types.post.post_attributes.Donut import PostsDonut
-from vk_types.gift_item.GiftItem import GiftItem, Gift
+from vk_types.attachments.gift_item.GiftItem import GiftItem, Gift
 from vk_types.friends.friendship.Friendship import Friendship
 from vk_types.friends.friend_list.FriendList import FriendList
 from vk_types.friends.mutual_friend.MutualFriend import MutualFriend

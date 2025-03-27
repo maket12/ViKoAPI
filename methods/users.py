@@ -1,14 +1,8 @@
-from typing import Union, Coroutine, Any
 from core.session_mixin import SessionMixin
 from enums.club.fields import ClubFields
 from enums.user.fields import UserFields
 from enums.user.sex import Sex
 from errors.exceptions import *
-from vk_types.gift_item.GiftItem import GiftItem
-from vk_types.friends.friendship.Friendship import Friendship
-from vk_types.friends.friend_list.FriendList import FriendList
-from vk_types.friends.mutual_friend.MutualFriend import MutualFriend
-from vk_types.user.User import User
 
 
 class UsersMethods(SessionMixin):

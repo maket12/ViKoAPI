@@ -1,5 +1,5 @@
 from datetime import datetime
-from vk_types.gift_item.gift_item_attributes.Gift import Gift
+from vk_types.attachments.gift_item.gift_item_attributes.Gift import Gift
 
 
 class GiftItem:

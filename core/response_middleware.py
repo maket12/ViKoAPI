@@ -1,8 +1,6 @@
-from typing import overload, Literal, Union, Any, List
 import json
 from core.object_factory import ObjectFactory
 from errors.exceptions import *  # maybe replace and do 2 files with exceptions: response's and before response
-from vk_types.gift_item import GiftItem
 
 
 class ResponseMiddleware:

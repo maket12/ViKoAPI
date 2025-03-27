@@ -1,7 +1,7 @@
 from typing import Coroutine, Any
 from core.session_mixin import SessionMixin
 from errors.exceptions import *
-from vk_types.gift_item.GiftItem import GiftItem
+from vk_types.attachments.gift_item.GiftItem import GiftItem
 
 
 class GiftsMethods(SessionMixin):
