@@ -1,5 +1,6 @@
 class ViKoAPIError(Exception):
-    pass
+    def __init__(self, error_msg: str):
+        super().__init__(f"{error_msg}")
 
 
 class ClientParamsEmpty(ViKoAPIError):
@@ -26,13 +27,31 @@ class NegativeValueError(ViKoAPIError):
 
 class InvalidUserID(ViKoAPIError):
     def __init__(self, value: int):
-        super().__init__(f"Invalid user_id: {value}")
+        super().__init__(f"Invalid user_id: {value}.")
         self.value = value
 
 
 class InvalidGroupID(ViKoAPIError):
     def __init__(self, value: int):
-        super().__init__(f"Invalid group_id: {value}")
+        super().__init__(f"Invalid group_id: {value}.")
+        self.value = value
+
+
+class InvalidPostID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid post_id: {value}.")
+        self.value = value
+
+
+class InvalidCommentID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid comment_id: {value}.")
+        self.value = value
+
+
+class InvalidStickerID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid sticker_id: {value}.")
         self.value = value
 
 
@@ -140,6 +159,12 @@ class ContentBlocked(ViKoAPIResponseError):
         super().__init__(19, error_msg, request_params)
 
 
+class NotFound(ViKoAPIResponseError):
+    """Wall's post or comment was not found."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(104, error_msg, request_params)
+
+
 class InvalidListId(ViKoAPIResponseError):
     """Invalid list id."""
     def __init__(self, error_msg: str, request_params: dict = None):
@@ -177,10 +202,52 @@ class UserNotFound(ViKoAPIResponseError):
         super().__init__(177, error_msg, request_params)
 
 
+class WallPostAccessError(ViKoAPIResponseError):
+    """Access to wall's post denied."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(210, error_msg, request_params)
+
+
+class WallCommentAccessError(ViKoAPIResponseError):
+    """Access to wall's comment denied."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(211, error_msg, request_params)
+
+
+class PostCommentsAccessError(ViKoAPIResponseError):
+    """Access to post comments denied."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(212, error_msg, request_params)
+
+
+class StatusRepliesAccessError(ViKoAPIResponseError):
+    """Access to status replies denied."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(213, error_msg, request_params)
+
+
+class HyperlinksForbidden(ViKoAPIResponseError):
+    """Hyperlinks are forbidden."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(222, error_msg, request_params)
+
+
+class TooManyReplies(ViKoAPIResponseError):
+    """Too many replies."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(223, error_msg, request_params)
+
+
 class TooManyFriends(ViKoAPIResponseError):
     """Too many friends."""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(242, error_msg, request_params)
+
+
+class Disabled2FA(ViKoAPIResponseError):
+    """You need to enable 2FA for this action."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(703, error_msg, request_params)
 
 
 class SpecifiedLinkIncorrect(ViKoAPIResponseError):

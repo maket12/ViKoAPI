@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class WallFilters(Enum):
+class WallFilter(Enum):
     SUGGESTS = "suggests"
     POSTPONED = "postponed"
     OWNER = "owner"

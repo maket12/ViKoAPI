@@ -5,14 +5,14 @@ from errors.exceptions import *  # maybe replace and do 2 files with exceptions:
 
 class ResponseMiddleware:
     """
-       Middleware для обработки API-ответов и автоматического преобразования JSON в объекты.
+       Middleware for processing API responses and automatically converting JSON into objects.
     """
     def __init__(self, object_factory: ObjectFactory):
         self.object_factory = object_factory
 
     def process(self, method: str, response: dict):
         """
-            Обрабатывает ответ API, автоматически конвертируя в объекты, если метод поддерживается.
+            Processes the API response, automatically converting to objects if the method is supported.
         """
         if "error" in response:
             error = response["error"]
@@ -22,52 +22,68 @@ class ResponseMiddleware:
 
             match error_code:
                 case 1:
-                    raise UnknownError(error_msg=error_msg, request_params=request_params)
+                    raise UnknownError(error_msg, request_params)
                 case 2:
-                    raise ApiAppOff(error_msg=error_msg, request_params=request_params)
+                    raise ApiAppOff(error_msg, request_params)
                 case 5:
-                    raise AuthorisationError(error_msg=error_msg, request_params=request_params)
+                    raise AuthorisationError(error_msg, request_params)
                 case 6:
-                    raise RateLimitError(error_msg=error_msg, request_params=request_params)
+                    raise RateLimitError(error_msg, request_params)
                 case 9:
-                    raise ActionLimitError(error_msg=error_msg, request_params=request_params)
+                    raise ActionLimitError(error_msg, request_params)
                 case 10:
-                    raise InternalServerError(error_msg=error_msg, request_params=request_params)
+                    raise InternalServerError(error_msg, request_params)
                 case 11:
-                    raise TestAppError(error_msg=error_msg, request_params=request_params)
+                    raise TestAppError(error_msg, request_params)
                 case 18:
-                    raise ProfileDeleted(error_msg=error_msg, request_params=request_params)
+                    raise ProfileDeleted(error_msg, request_params)
                 case 19:
-                    raise ContentBlocked(error_msg=error_msg, request_params=request_params)
+                    raise ContentBlocked(error_msg, request_params)
                 case 23:
-                    raise MethodUnavailable(error_msg=error_msg, request_params=request_params)
+                    raise MethodUnavailable(error_msg, request_params)
                 case 30:
-                    raise PrivateProfileError(error_msg=error_msg, request_params=request_params)
+                    raise PrivateProfileError(error_msg, request_params)
+                case 104:
+                    raise NotFound(error_msg, request_params)
                 case 171:
-                    raise InvalidListId(error_msg=error_msg, request_params=request_params)
+                    raise InvalidListId(error_msg, request_params)
                 case 173:
-                    raise MaximumListNumber(error_msg=error_msg, request_params=request_params)
+                    raise MaximumListNumber(error_msg, request_params)
                 case 174:
-                    raise CannotAddYourself(error_msg=error_msg, request_params=request_params)
+                    raise CannotAddYourself(error_msg, request_params)
                 case 175:
-                    raise BlacklistedError(error_msg=error_msg, request_params=request_params)
+                    raise BlacklistedError(error_msg, request_params)
                 case 176:
-                    raise UserBlacklistedError(error_msg=error_msg, request_params=request_params)
+                    raise UserBlacklistedError(error_msg, request_params)
                 case 177:
-                    raise UserNotFound(error_msg=error_msg, request_params=request_params)
+                    raise UserNotFound(error_msg, request_params)
                 case 203:
-                    raise GroupAccessError(error_msg=error_msg, request_params=request_params)
+                    raise GroupAccessError(error_msg, request_params)
+                case 210:
+                    raise WallPostAccessError(error_msg, request_params)
+                case 211:
+                    raise WallCommentAccessError(error_msg, request_params)
+                case 212:
+                    raise PostCommentsAccessError(error_msg, request_params)
+                case 213:
+                    raise StatusRepliesAccessError(error_msg, request_params)
+                case 222:
+                    raise HyperlinksForbidden(error_msg, request_params)
+                case 223:
+                    raise TooManyReplies(error_msg, request_params)
                 case 242:
-                    raise TooManyFriends(error_msg=error_msg, request_params=request_params)
+                    raise TooManyFriends(error_msg, request_params)
+                case 703:
+                    raise Disabled2FA(error_msg, request_params)
                 case 3102:
-                    raise SpecifiedLinkIncorrect(error_msg=error_msg, request_params=request_params)
+                    raise SpecifiedLinkIncorrect(error_msg, request_params)
                 case _:
-                    raise ViKoAPIResponseError(error_code=error_code, error_msg=error_msg,
-                                               request_params=request_params)
+                    raise ViKoAPIResponseError(error_code, error_msg, request_params)
+
         if "response" in response:
             data = response["response"]
-
             return self._convert_object(method, data)
+
         return response
 
     def _convert_object(self, method: str, data: json):
@@ -142,6 +158,8 @@ class ResponseMiddleware:
                     return self.object_factory.create_posts(data.get("items"))
                 case "wall.checkCopyrightLink" | "wall.closeComments":
                     return True
+                case "pin":
+                    return
                 case _:
                     return data
 

@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.18
+Current Version is 0.19
 
 ---
 # Version 0.03
@@ -81,3 +81,8 @@ Added new types(and their subtypes): File, Graffiti, Sticker, VoiceMessage and L
 
 # Version 0.18
 Completed Users methods. Some refactoring in core/response_middleware.py was done.
+
+---
+
+# Version 0.19
+Added a lot of new attachments types and some methods in Wall were released.

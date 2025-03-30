@@ -1,4 +1,4 @@
-from vk_types.attachments.photo.photo_attributes.size import PhotoSize
+from vk_types.attachments.photo.photo_attributes.Size import PhotoSize
 from vk_types.attachments.graffiti.Graffiti import Graffiti
 from vk_types.attachments.voice_message.VoiceMessage import AudioMessage
 

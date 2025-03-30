@@ -1,5 +1,5 @@
 from datetime import datetime
-from vk_types.attachments.photo.photo_attributes.size import PhotoSize
+from vk_types.attachments.photo.photo_attributes.Size import PhotoSize
 
 
 class Photo:
