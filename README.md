@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.17
+Current Version is 0.18
 
 ---
 # Version 0.03
@@ -76,3 +76,8 @@ New type Audio was released.
 
 # Version 0.17
 Added new types(and their subtypes): File, Graffiti, Sticker, VoiceMessage and Link.
+
+---
+
+# Version 0.18
+Completed Users methods. Some refactoring in core/response_middleware.py was done.

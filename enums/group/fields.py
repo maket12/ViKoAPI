@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ClubFields(Enum):
+class GroupFields(Enum):
     ID = "id"
     NAME = "name"
     SCREEN_NAME = "screen_name"

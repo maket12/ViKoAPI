@@ -1,13 +1,39 @@
+from typing import Coroutine, Any, Tuple
 from core.session_mixin import SessionMixin
-from enums.club.fields import ClubFields
 from enums.user.fields import UserFields
+from enums.group.fields import GroupFields
 from enums.user.sex import Sex
+from enums.user.report_type import ReportType
+from vk_types.user.User import User
+from vk_types.group.Group import Group
 from errors.exceptions import *
 
 
 class UsersMethods(SessionMixin):
+    def get(self, user_ids: list, fields: list[UserFields] = None, name_case: str = "nom",
+            from_group_id: int = None) -> Coroutine[Any, Any, list[User]]:
+        params = {}
+
+        for uid in user_ids:
+            if uid <= 0:
+                raise InvalidUserID(uid)
+            params["user_ids"] += f",{uid}" if len(params["user_ids"]) != 0 else uid
+
+        if fields:
+            params["fields"] = ','.join(field.value for field in fields)
+
+        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
+            params["name_case"] = name_case
+        else:
+            raise UndefinedParameterValue("name_case", name_case)
+
+        if from_group_id:
+            params["from_group_id"] = from_group_id
+
+        return self.request_async("users.get", params)
+
     def search(self, text: str, sort: int = 0, offset: int = None, count: int = 100,
-               fields: [ClubFields] = None, city: int = None, country: int = None,
+               fields: list[UserFields] = None, city: int = None, country: int = None,
                hometown: str = None, university_country: int = None, university: int = None,
                university_year: int = None, university_faculty: int = None,
                university_chair: int = None, sex: str | Sex = "any",
@@ -17,7 +43,7 @@ class UsersMethods(SessionMixin):
                school_city: int = None, school_class: int = None, school: int = None,
                school_year: int = None, religion: str = None, company: str = None,
                position: str = None, group_id: int = None, from_list: str = None,
-               screen_ref: str = None):
+               screen_ref: str = None) -> Coroutine[Any, Any, list[User]]:
         if sort and sort != 1:
             raise UndefinedParameterValue("sort", sort)
 
@@ -30,7 +56,7 @@ class UsersMethods(SessionMixin):
         if count < 0:
             raise NegativeValueError("count", count)
         if fields:
-            params["fields"] = ','.join(fields)
+            params["fields"] = ','.join(field.value for field in fields)
         if city:
             if city < 0:
                 raise NegativeValueError("city", city)
@@ -97,14 +123,10 @@ class UsersMethods(SessionMixin):
             if birth_year < 0:
                 raise NegativeValueError("birth_year", birth_year)
             params["birth_year"] = birth_year
-        if is_online:
-            params["online"] = 1
-        else:
-            params["online"] = 0
-        if has_photo:
-            params["has_photo"] = 1
-        else:
-            params["has_photo"] = 0
+
+        params["online"] = is_online
+        params["has_photo"] = has_photo
+
         if school_country:
             if school_country < 0:
                 raise NegativeValueError("school_country", school_country)
@@ -140,43 +162,28 @@ class UsersMethods(SessionMixin):
 
         return self.request_async("users.search", params)
 
-    def get(self, user_ids: list, fields: list[UserFields] = None, name_case: str = "nom",
-            from_group_id: int = None):
-        params = {"user_ids": ','.join(user_ids)}
-        if fields:
-            fields_str = ""
-            for field in fields:
-                fields_str += ',' if fields_str else None
-                fields_str += str(field)
-            params["fields"] = fields_str
-        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
-            params["name_case"] = name_case
-        else:
-            raise UndefinedParameterValue("name_case", name_case)
-        if from_group_id:
-            params["from_group_id"] = from_group_id
+    def get_followers(self, user_id: int, offset: int | None = None, count: int | None = None,
+                      fields: list[UserFields] | None = None,
+                      name_case: str = "nom") -> Coroutine[Any, Any, list[User]]:
+        if user_id <= 0:
+            raise InvalidUserID(user_id)
 
-        return self.request_async("users.get", params)
-
-    def get_followers(self, user_id: int, offset: int = None, count: int = None,
-                      fields: list[UserFields] = None, name_case: str = "nom"):
         params = {
             "user_id": user_id
         }
 
-        if offset < 0:
-            raise NegativeValueError("offset", offset)
-        if count < 0:
-            raise NegativeValueError("count", count)
-        params["offset"] = offset
-        params["count"] = count
+        if offset:
+            if offset < 0:
+                raise NegativeValueError("offset", offset)
+            params["offset"] = offset
+
+        if count:
+            if count < 0:
+                raise NegativeValueError("count", count)
+            params["count"] = count
 
         if fields:
-            fields_str = ""
-            for field in fields:
-                fields_str += ',' if fields_str else None
-                fields_str += str(field)
-            params["fields"] = fields_str
+            params["fields"] = ','.join(field.value for field in fields)
 
         if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
             params["name_case"] = name_case
@@ -185,8 +192,9 @@ class UsersMethods(SessionMixin):
 
         return self.request_async("users.getFollowers", params)
 
-    def get_my_followers(self, offset: int = None, count: int = None,
-                         fields: list[UserFields] = None, name_case: str = "nom"):
+    def get_my_followers(self, offset: int | None = None, count: int | None = None,
+                         fields: list[UserFields] | None = None,
+                         name_case: str = "nom") -> Coroutine[Any, Any, list[User]]:
         params = {}
 
         if offset:
@@ -199,11 +207,7 @@ class UsersMethods(SessionMixin):
             params["count"] = count
 
         if fields:
-            fields_str = ""
-            for field in fields:
-                fields_str += ',' if fields_str else None
-                fields_str += str(field)
-            params["fields"] = fields_str
+            params["fields"] = ','.join(field.value for field in fields)
 
         if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
             params["name_case"] = name_case
@@ -212,11 +216,42 @@ class UsersMethods(SessionMixin):
 
         return self.request_async("users.getFollowers", params)
 
-    def report(self, user_id: int, report_type: str, comment: str = None):
+    def get_subscriptions(
+            self, user_id: int, offset: int | None = None, count: int | None = None,
+            fields: list[UserFields | GroupFields] | None = None
+    ) -> Coroutine[Any, Any, Tuple[list[User], list[Group]]]:
+        if user_id <= 0:
+            raise InvalidUserID(user_id)
+        params = {"user_id": user_id}
+
+        if offset:
+            if offset < 0:
+                raise NegativeValueError("offset", offset)
+            params["offset"] = offset
+
+        if count:
+            if count < 0:
+                raise NegativeValueError("count", count)
+            params["count"] = count
+
+        if fields:
+            params["fields"] = ','.join(str(field.value) for field in fields)
+
+        return self.request_async("users.getSubscriptions", params)
+
+    def report(self, user_id: int, report_type: ReportType | str,
+               comment: str | None = None) -> Coroutine[Any, Any, None]:
+        if user_id <= 0:
+            raise InvalidUserID(user_id)
+
         params = {
             "user_id": user_id,
-            "type": report_type
         }
+
+        if isinstance(report_type, ReportType):
+            params["type"] = report_type.value
+        else:
+            params["type"] = report_type
 
         if comment:
             params["comment"] = comment

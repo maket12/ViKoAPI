@@ -71,47 +71,79 @@ class ResponseMiddleware:
         return response
 
     def _convert_object(self, method: str, data: json):
-        """
-            Определяет, в какой объект конвертировать JSON-ответ, основываясь на методе API.
-        """
-        match method:
-            case "status.get":
-                return data["text"]
-            case "friends.add":
-                return int(data)
-            case "friends.addList":
-                return data["list_id"]
-            case "friends.getLists":
-                return self.object_factory.create_friend_lists(data.get("items"))
-            case "friends.getOnline":
-                return self.object_factory.create_online_friends(data)
-            # case "friends.getRecent":
-            #     return data
-            case "friends.areFriends":
-                return self.object_factory.create_friendships(data)
-            case "friends.deleteAllRequests":
-                return
-            case "friends.getMutual":
-                return self.object_factory.create_mutual_friends(data)
-            case "friends.getRequests":
-                return self.object_factory.create_friend_requests(data.get("items"))
-            case "friends.getSuggestions":
-                return self.object_factory.create_users(data.get("items"))
-            case "friends.search":
-                return  # something
-            case "likes.add" | "likes.delete":
-                return self.object_factory.create_reactions(data.get("items"))
-            case "likes.getList":
-                return self.object_factory.create_likes_list(data.get("items"))
-            case "likes.isLiked":
-                return bool(data.get("liked")), bool(data.get("copied"))
-            case "groups.search":
-                return
-            case "wall.get":
-                return self.object_factory.create_posts(data.get("items"))
-            case "wall.checkCopyrightLink" | "wall.closeComments":
-                return True
-            case "gifts.get":
+        parts = method.split('.')
+        first_part = parts[0]
+        second_part = parts[1]
+
+        if first_part == "status":
+            return data["text"]
+
+        elif first_part == "gifts":
+            if second_part == "get":
                 return self.object_factory.create_gift_items(data.get("items"))
-            case _:
+            else:
                 return data
+
+        elif first_part == "users":
+            match second_part:
+                case "get" | "search" | "getFollowers":
+                    return self.object_factory.create_users(data.get("items"))
+                case "getSubscriptions":
+                    return self.object_factory.create_subscriptions(data.get("items"))
+                case _:
+                    return data
+
+        elif first_part == "friends":
+            match second_part:
+                case "add":
+                    return int(data)
+                case "addList":
+                    return data["list_id"]
+                case "getLists":
+                    return self.object_factory.create_friend_lists(data.get("items"))
+                case "getOnline":
+                    return self.object_factory.create_online_friends(data)
+                case "getRecent":
+                    return data
+                case "areFriends":
+                    return self.object_factory.create_friendships(data)
+                case "deleteAllRequests":
+                    return
+                case "getMutual":
+                    return self.object_factory.create_mutual_friends(data)
+                case "getRequests":
+                    return self.object_factory.create_friend_requests(data.get("items"))
+                case "getSuggestions":
+                    return self.object_factory.create_users(data.get("items"))
+                case "search":
+                    return self.object_factory.create_users(data.get("items"))
+                case _:
+                    return data
+
+        elif first_part == "likes":
+            match second_part:
+                case "add" | "delete":
+                    return self.object_factory.create_reactions(data.get("items"))
+                case "getList":
+                    return self.object_factory.create_likes_list(data.get("items"))
+                case "isLiked":
+                    return bool(data.get("liked")), bool(data.get("copied"))
+
+        elif first_part == "groups":
+            match second_part:
+                case "search":
+                    return
+                case _:
+                    return data
+
+        elif first_part == "wall":
+            match second_part:
+                case "get":
+                    return self.object_factory.create_posts(data.get("items"))
+                case "wall.checkCopyrightLink" | "wall.closeComments":
+                    return True
+                case _:
+                    return data
+
+        else:
+            return data

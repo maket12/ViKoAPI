@@ -1,11 +1,11 @@
 from typing import Union, Coroutine, Any
 from core.session_mixin import SessionMixin
-from enums.club.fields import ClubFields
+from enums.group.fields import GroupFields
 from errors.exceptions import *
 
 
 class GroupsMethods(SessionMixin):
-    def get_by_id(self, group_ids: list, fields: list[ClubFields] | str = None):
+    def get_by_id(self, group_ids: list, fields: list[GroupFields] | str = None):
         params = {}
         groups_length = len(group_ids)
         if groups_length == 0:

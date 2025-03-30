@@ -1,4 +1,5 @@
 from vk_types.user.User import User
+from vk_types.group.Group import Group
 from vk_types.chat.Chat import Chat
 from vk_types.post.Post import (
         Post, PostsCopyright, PostsLikes,
@@ -27,6 +28,21 @@ class ObjectFactory:
             user = ObjectFactory.create_user(item)
             result.append(user)
         return result
+
+    @staticmethod
+    def create_subscriptions(items: list):
+        users = []
+        groups = []
+
+        for item in items:
+            if item["type"] == "profile":
+                user = ObjectFactory.create_user(item)
+                users.append(user)
+            else:
+                group = ObjectFactory.create_group(item)
+                groups.append(group)
+
+        return users, groups
 
     @staticmethod
     def create_online_friends(data: dict | list[int]) -> list[int]:
@@ -148,7 +164,8 @@ class ObjectFactory:
         return result
 
     @staticmethod
-    def create_group(data: dict) -> str:return ""
+    def create_group(data: dict) -> Group:
+        return Group()
 
     @staticmethod
     def create_comments(data: dict) -> PostsComments:

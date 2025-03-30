@@ -1,7 +1,7 @@
 from typing import Union, Coroutine, Any
 from core.session_mixin import SessionMixin
 from enums.wall.filters import WallFilters
-from enums.club.fields import ClubFields
+from enums.group.fields import GroupFields
 from enums.user.fields import UserFields
 from errors.exceptions import *
 
@@ -24,7 +24,7 @@ class WallMethods(SessionMixin):
             offset: int = None, count: int = None,
             wall_filter: WallFilters | str = WallFilters.ALL,
             extended: bool = False,
-            fields: Union[list[ClubFields], list[UserFields]] | str = None):
+            fields: Union[list[GroupFields], list[UserFields]] | str = None):
         params = {}
         if owner_id:
             params["owner_id"] = owner_id
@@ -47,7 +47,7 @@ class WallMethods(SessionMixin):
         return self.request_async("wall.get", params)
 
     def get_comment(self, owner_id: int, comment_id: int, extended: bool = False,
-                    fields: Union[list[ClubFields], list[UserFields]] | str = None):
+                    fields: Union[list[GroupFields], list[UserFields]] | str = None):
         if comment_id <= 0:
             raise NegativeValueError("comment_id", comment_id)
 
@@ -67,7 +67,7 @@ class WallMethods(SessionMixin):
                      need_likes: bool = False, start_comment_id: int = None,
                      offset: int = None, count: int = 10,
                      sort: int = -1, preview_length: int = 0,
-                     extended: bool = False, fields: Union[list[ClubFields], list[UserFields]] | str = None,
+                     extended: bool = False, fields: Union[list[GroupFields], list[UserFields]] | str = None,
                      comment_id: int = None, thread_items_count: int = None):
         """
                 sort = -1 - desc(from newest to oldest)

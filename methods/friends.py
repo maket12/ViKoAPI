@@ -137,8 +137,12 @@ class FriendsMethods(SessionMixin):
                 params["fields"] = ','.join(field.value for field in fields)
             else:
                 params["fields"] = fields
-        if name_case:
+
+        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
             params["name_case"] = name_case
+        else:
+            raise UndefinedParameterValue("name_case", name_case)
+
         if ref:
             if len(ref) > 255:
                 raise UndefinedParameterValue("ref", ref)
@@ -174,8 +178,12 @@ class FriendsMethods(SessionMixin):
                 params["fields"] = ','.join(field.value for field in fields)
             else:
                 params["fields"] = fields
-        if name_case:
+
+        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
             params["name_case"] = name_case
+        else:
+            raise UndefinedParameterValue("name_case", name_case)
+
         if ref:
             if len(ref) > 255:
                 raise UndefinedParameterValue("ref", ref)
@@ -403,7 +411,10 @@ class FriendsMethods(SessionMixin):
             else:
                 params["fields"] = fields
 
-        params["name_case"] = name_case
+        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
+            params["name_case"] = name_case
+        else:
+            raise UndefinedParameterValue("name_case", name_case)
 
         if with_many_mutual:
             params["filter"] = "mutual"
@@ -427,7 +438,10 @@ class FriendsMethods(SessionMixin):
             else:
                 params["fields"] = fields
 
-        params["name_case"] = name_case
+        if name_case in ["nom", "gen", "dat", "acc", "ins", "abl"]:
+            params["name_case"] = name_case
+        else:
+            raise UndefinedParameterValue("name_case", name_case)
 
         if offset < 0:
             raise NegativeValueError("offset", offset)
