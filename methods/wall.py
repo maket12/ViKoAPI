@@ -243,12 +243,24 @@ class WallMethods(SessionMixin):
 
         return self.request_async("wall.getReposts", params)
 
-    def pin(self, owner_id: int, post_id: int) -> Coroutine[Any, Any, None]:
+    def pin(self, post_id: int, owner_id: int | None) -> Coroutine[Any, Any, None]:
         if post_id < 0:
-            raise NegativeValueError("post_id", post_id)
+            raise InvalidPostID(post_id)
 
         params = {
             "owner_id": owner_id,
             "post_id": post_id
         }
         return self.request_async("wall.pin", params)
+
+    def unpin(self, post_id: int, owner_id: int | None) -> Coroutine[Any, Any, None]:
+        if post_id <= 0:
+            raise InvalidPostID(post_id)
+
+        params = {}
+
+        if owner_id:
+            params["owner_id"] = owner_id
+        params["post_id"] = post_id
+
+        return self.request_async("wall.unpin", params)

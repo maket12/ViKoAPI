@@ -1,4 +1,4 @@
-class AudioMessage:
+class VoiceMessage:
     def __init__(self, duration: int, waveform: list[int], link_ogg: str, link_mp3: str):
         self.duration = duration
         self.waveform = waveform
@@ -6,7 +6,7 @@ class AudioMessage:
         self.link_mp3 = link_mp3
 
     def to_dict(self) -> dict:
-        """Returns the audio message object as a dictionary."""
+        """Returns the voice message object as a dictionary."""
         return {
             "duration": self.duration,
             "waveform": self.waveform,

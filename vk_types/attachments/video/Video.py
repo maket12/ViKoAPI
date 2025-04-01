@@ -1,6 +1,5 @@
 from datetime import datetime
-from vk_types.attachments.video.video_attributes.Image import VideoImage
-from vk_types.attachments.video.video_attributes.FirstFrame import VideoFirstFrame
+from vk_types.attachments.photo.Photo import Photo
 from enums.user.platform import UsersPlatform
 from enums.attachments.video_type import VideoType
 from enums.attachments.video_live_status import VideoLiveStatus
@@ -8,8 +7,8 @@ from enums.attachments.video_live_status import VideoLiveStatus
 
 class Video:
     def __init__(self, video_id: int, owner_id: int, title: str, description: str,
-                 duration: int, image: list[VideoImage] | None,
-                 first_frame: list[VideoFirstFrame] | None, created_unix: int,
+                 duration: int, image: list[Photo] | None,
+                 first_frame: list[Photo] | None, created_unix: int,
                  adding_unix: int, views: int, local_views: int | None, comments: int,
                  player: str, platform: UsersPlatform | None, can_add: bool, is_private: bool,
                  is_favorite: bool, can_comment: bool, can_edit: bool, can_like: bool,

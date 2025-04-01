@@ -15,3 +15,14 @@ class PostsComments:
         self.groups_can_post = groups_can_post
         self.can_close = can_close
         self.can_open = can_open
+
+    def to_dict(self) -> dict:
+        """Returns the post comments object as a dictionary."""
+        return {
+            "count": self.count,
+            "can_post": self.can_post,
+            "groups_can_post": self.groups_can_post,
+            "can_close": self.can_close,
+            "can_open": self.can_open
+        }
+

@@ -12,3 +12,13 @@ class PostsLikes:
         self.is_liked = is_liked
         self.can_like = can_like
         self.can_repost = can_repost
+
+    def to_dict(self) -> dict:
+        """Returns the post likes object as a dictionary."""
+        return {
+            "count": self.count,
+            "is_liked": self.is_liked,
+            "can_like": self.can_like,
+            "can_repost": self.can_repost
+        }
+

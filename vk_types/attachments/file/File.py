@@ -1,6 +1,6 @@
 from datetime import datetime
 from enums.attachments.file_type import FileType
-from vk_types.attachments.file.file_attributes.preview import FilePreview
+from vk_types.attachments.file.file_attributes.Preview import FilePreview
 
 
 class File:

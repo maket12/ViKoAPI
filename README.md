@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.2
+Current Version is 0.21
 
 ---
 # Version 0.03
@@ -91,3 +91,8 @@ Added a lot of new attachments types and some methods in Wall were released.
 
 # Version 0.2
 Released a lot of new classes(and their subclasses) including Group, Attachments. Also some refactoring have done.
+
+---
+
+# Version 0.21
+Some refactoring was done. Also some methods(wall) were released and added new class - PrettyCard.

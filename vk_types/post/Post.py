@@ -3,8 +3,8 @@ from enums.post.type import PostType
 from vk_types.post.post_subclasses.Comments import PostsComments
 from vk_types.post.post_subclasses.Copyright import PostsCopyright
 from vk_types.post.post_subclasses.Likes import PostsLikes
-from vk_types.post.post_subclasses.Reposts import PostsReposts
 from vk_types.post.post_subclasses.Source import PostsSource
+from vk_types.attachments.Attachment import Attachment
 from vk_types.attachments.geo_place.GeoPlace import GeoPlace
 from vk_types.post.post_subclasses.Donut import PostsDonut
 
@@ -14,9 +14,9 @@ class Post:
                  created_by_user_id: int | None, date_unix: int, text: str,
                  reply_owner_user_id: int | None, reply_post_id: int | None,
                  for_friends_only: bool, comments: PostsComments | None, copyright: PostsCopyright,
-                 likes: PostsLikes | None, reposts: PostsReposts | None, views: int,
+                 likes: PostsLikes | None, reposts: int | None, is_reposted: bool | None, views: int,
                  post_type: PostType, post_source: PostsSource | None, signer_user_id: int | None,
-                 attachments: object | None, geo: GeoPlace | None, reposts_history: list['Post'] | None,
+                 attachments: list[Attachment] | None, geo: GeoPlace | None, reposts_history: list['Post'] | None,
                  can_pin: bool, can_delete: bool, can_edit: bool,
                  is_pinned: bool, is_add: bool, is_favorite: bool, donut: PostsDonut | None,
                  postponed_id: int | None):
@@ -35,7 +35,8 @@ class Post:
         :param comments: Information about comments to the post
         :param copyright: Information about the source of the material
         :param likes: Information about likes to the post
-        :param reposts: Information about reposts of the post
+        :param reposts: Amount of reposts of the post
+        :param is_reposted: Information about does the current user reposted post
         :param views: Number of views of the post
         :param post_type: Type of post (PostType)
         :param post_source: Information about the method of post publication
@@ -65,6 +66,7 @@ class Post:
         self.copyright = copyright
         self.likes = likes
         self.reposts = reposts
+        self.is_reposted = is_reposted
         self.views = views
         self.post_type = post_type
         self.post_source = post_source
@@ -80,3 +82,40 @@ class Post:
         self.is_add = is_add
         self.donut = donut
         self.postponed_id = postponed_id
+
+    def to_dict(self) -> dict:
+        """Returns the post object as a dictionary."""
+        return {
+            "post_id": self.post_id,
+            "owner_id": self.owner_user_id,
+            "from_id": self.from_user_id,
+            "created_by": self.created_by_user_id,
+            "date": self.publish_datetime.isoformat(),
+            "text": self.text,
+            "reply_owner_user_id": self.reply_owner_user_id,
+            "reply_post_id": self.reply_post_id,
+            "for_friends_only": self.for_friends_only,
+            "comments": self.comments.to_dict() if self.comments else None,
+            "copyright": self.copyright.to_dict() if self.copyright else None,
+            "likes": self.likes.to_dict() if self.likes else None,
+            "reposts": {
+                "count": self.reposts,
+                "is_reposted": self.is_reposted
+            },
+            "views": self.views,
+            "post_type": self.post_type.value,
+            "post_source": self.post_source.to_dict() if self.post_source else None,
+            "signer_user_id": self.signer_user_id,
+            "attachments": [a.to_dict() for a in self.attachments] if self.attachments else None,
+            "geo": self.geo.to_dict() if self.geo else None,
+            "reposts_history": [r.to_dict() for r in self.reposts_history] if self.reposts_history else None,
+            "can_pin": self.can_pin,
+            "can_delete": self.can_delete,
+            "can_edit": self.can_edit,
+            "is_pinned": self.is_pinned,
+            "is_add": self.is_add,
+            "is_favorite": self.is_favorite,
+            "donut": self.donut.to_dict() if self.donut else None,
+            "postponed_id": self.postponed_id
+        }
+

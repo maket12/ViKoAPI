@@ -17,5 +17,5 @@ class AttachmentType(Enum):
     MARKET = "market_item"
     MARKET_ALBUM = "market_album"
     STICKER = "sticker"
-    PRETTY_CARDS = "pretty_cards"
+    PRETTY_CARD = "pretty_cards"
     EVENT = "event"

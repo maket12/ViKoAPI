@@ -12,3 +12,13 @@ class PostsCopyright:
         self.source_link = source_link
         self.source_name = source_name
         self.source_type = source_type
+
+    def to_dict(self) -> dict:
+        """Returns the post copyright object as a dictionary."""
+        return {
+            "source_id": self.source_id,
+            "source_link": self.source_link,
+            "source_name": self.source_name,
+            "source_type": self.source_type
+        }
+
