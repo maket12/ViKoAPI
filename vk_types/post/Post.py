@@ -1,12 +1,12 @@
 from datetime import datetime
 from enums.post.type import PostType
-from vk_types.post.post_attributes.Comments import PostsComments
-from vk_types.post.post_attributes.Copyright import PostsCopyright
-from vk_types.post.post_attributes.Likes import PostsLikes
-from vk_types.post.post_attributes.Reposts import PostsReposts
-from vk_types.post.post_attributes.Source import PostsSource
-from vk_types.post.post_attributes.Geo import PostsGeo
-from vk_types.post.post_attributes.Donut import PostsDonut
+from vk_types.post.post_subclasses.Comments import PostsComments
+from vk_types.post.post_subclasses.Copyright import PostsCopyright
+from vk_types.post.post_subclasses.Likes import PostsLikes
+from vk_types.post.post_subclasses.Reposts import PostsReposts
+from vk_types.post.post_subclasses.Source import PostsSource
+from vk_types.attachments.geo_place.GeoPlace import GeoPlace
+from vk_types.post.post_subclasses.Donut import PostsDonut
 
 
 class Post:
@@ -16,7 +16,7 @@ class Post:
                  for_friends_only: bool, comments: PostsComments | None, copyright: PostsCopyright,
                  likes: PostsLikes | None, reposts: PostsReposts | None, views: int,
                  post_type: PostType, post_source: PostsSource | None, signer_user_id: int | None,
-                 attachments: object | None, geo: PostsGeo | None, reposts_history: list['Post'] | None,
+                 attachments: object | None, geo: GeoPlace | None, reposts_history: list['Post'] | None,
                  can_pin: bool, can_delete: bool, can_edit: bool,
                  is_pinned: bool, is_add: bool, is_favorite: bool, donut: PostsDonut | None,
                  postponed_id: int | None):

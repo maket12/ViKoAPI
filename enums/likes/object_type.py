@@ -8,7 +8,7 @@ class LikesObjectType(Enum):
     VIDEO = "video"
     AUDIO = "audio"
     NOTE = "note"
-    MARKET = "market"
+    MARKET = "market_item"
     PHOTO_COMMENT = "photo_comment"
     VIDEO_COMMENT = "video_comment"
     TOPIC_COMMENT = "topic_comment"

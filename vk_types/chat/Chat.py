@@ -1,4 +1,4 @@
-from vk_types.chat.chat_attributes.push_settings import ChatsPustSettings
+from vk_types.chat.chat_subclasses.push_settings import ChatsPustSettings
 
 
 class Chat:

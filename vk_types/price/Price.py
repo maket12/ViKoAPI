@@ -1,7 +1,7 @@
-from vk_types.attachments.link.link_attributes.Currency import PricesCurrency
+from vk_types.price.prices_subclasses.Currency import PricesCurrency
 
 
-class ProductsPrice:
+class Price:
     def __init__(self, amount: int, currency: PricesCurrency, text: str):
         self.amount = amount / 100
         self.currency = currency

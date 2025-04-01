@@ -47,7 +47,7 @@ class GroupFields(Enum):
     LINKS = "links"
     MAIN_ALBUM_ID = "main_album_id"
     MAIN_SECTION = "main_section"
-    MARKET = "market"
+    MARKET = "market_item"
     MEMBER_STATUS = "member_status"
     MEMBERS_COUNT = "members_count"
     PLACE = "place"

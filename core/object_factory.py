@@ -3,9 +3,10 @@ from vk_types.group.Group import Group
 from vk_types.chat.Chat import Chat
 from vk_types.post.Post import (
         Post, PostsCopyright, PostsLikes,
-        PostsComments, PostsReposts, PostsGeo, PostsSource)
-from vk_types.post.post_attributes.Place import GeoPlace
-from vk_types.post.post_attributes.Donut import PostsDonut
+        PostsComments, PostsReposts, PostsSource)
+from vk_types.attachments.geo_place.GeoPlace import GeoPlace
+from vk_types.attachments.geo_place.geoplace_subclasses.Place import Place
+from vk_types.post.post_subclasses.Donut import PostsDonut
 from vk_types.attachments.gift_item.GiftItem import GiftItem, Gift
 from vk_types.friends.friendship.Friendship import Friendship
 from vk_types.friends.friend_list.FriendList import FriendList
@@ -217,7 +218,7 @@ class ObjectFactory:
         return PostsSource(**mapped_data)
 
     @staticmethod
-    def create_place(data: dict) -> GeoPlace:
+    def create_place(data: dict) -> Place:
         mapped_data = {
             "place_id": data.get("id"),
             "title": data.get("title"),
@@ -231,16 +232,16 @@ class ObjectFactory:
             "city": data.get("city"),
             "address": data.get("address")
         }
-        return GeoPlace(**mapped_data)
+        return Place(**mapped_data)
 
     @staticmethod
-    def create_geo(data: dict) -> PostsGeo:
+    def create_geo(data: dict) -> GeoPlace:
         mapped_data = {
             "place_type": data.get("type"),
             "coordinates": data.get("coordinates"),
             "place": ObjectFactory.create_place(data.get("place")) if data.get("place") else None
         }
-        return PostsGeo(**mapped_data)
+        return GeoPlace(**mapped_data)
 
     @staticmethod
     def create_post_donut(data: dict) -> PostsDonut:

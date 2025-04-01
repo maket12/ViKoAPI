@@ -4,22 +4,22 @@ from enums.user.friend_status import FriendStatus
 from enums.user.relation import RelationStatus
 from enums.user.sex import Sex
 from enums.user.wall_default import WallDefault
-from vk_types.user.users_attributes.Carrer import UsersCareer
-from vk_types.user.users_attributes.City import UsersCity
-from vk_types.user.users_attributes.Contacts import UsersContacts
-from vk_types.user.users_attributes.Connection import UsersConnection
-from vk_types.user.users_attributes.Counters import UsersCounters
-from vk_types.user.users_attributes.Country import UsersCountry
-from vk_types.user.users_attributes.Education import UsersEducation
-from vk_types.user.users_attributes.NameCases import UsersNameCases
-from vk_types.user.users_attributes.SurnameCases import UsersSurnameCases
-from vk_types.user.users_attributes.LastSeen import UsersLastSeen
-from vk_types.user.users_attributes.Military import UsersMilitary
-from vk_types.user.users_attributes.Occupation import UsersOccupation
-from vk_types.user.users_attributes.Personal import UsersPersonal
-from vk_types.user.users_attributes.Relative import UsersRelative
-from vk_types.user.users_attributes.School import UsersSchool
-from vk_types.user.users_attributes.University import UsersUniversity
+from vk_types.user.user_subclasses.Carrer import UsersCareer
+from vk_types.user.user_subclasses.City import UsersCity
+from vk_types.user.user_subclasses.Contacts import UsersContacts
+from vk_types.user.user_subclasses.Connection import UsersConnection
+from vk_types.user.user_subclasses.Counters import UsersCounters
+from vk_types.user.user_subclasses.Country import UsersCountry
+from vk_types.user.user_subclasses.Education import UsersEducation
+from vk_types.user.user_subclasses.NameCases import UsersNameCases
+from vk_types.user.user_subclasses.SurnameCases import UsersSurnameCases
+from vk_types.user.user_subclasses.LastSeen import UsersLastSeen
+from vk_types.user.user_subclasses.Military import UsersMilitary
+from vk_types.user.user_subclasses.Occupation import UsersOccupation
+from vk_types.user.user_subclasses.Personal import UsersPersonal
+from vk_types.user.user_subclasses.Relative import UsersRelative
+from vk_types.user.user_subclasses.School import UsersSchool
+from vk_types.user.user_subclasses.University import UsersUniversity
 
 
 class User:
@@ -30,7 +30,7 @@ class User:
                  can_see_audio: bool | None, can_send_friend_request: bool | None,
                  can_write_private_message: bool | None, career: list[UsersCareer] | None,
                  city: UsersCity | None, common_count: int | None, connections: list[UsersConnection] | None,
-                 contacts: UsersContacts, counters: UsersCounters | None,
+                 contacts: UsersContacts | None, counters: UsersCounters | None,
                  country: UsersCountry | None, crop_photo: object | None, domain: str | None,
                  education: UsersEducation | None, exports: object | None,
                  name_cases: UsersNameCases | None, followers_count: int, friend_status: FriendStatus | None,

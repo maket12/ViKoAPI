@@ -50,7 +50,7 @@ class WallMethods(SessionMixin):
             params["message"] = message
         elif attachments:
             for attachment in attachments:
-                attachment_str = f"{attachment.type}{attachment.owner_id}_{attachment.media_id}"
+                attachment_str = attachment.to_str()
                 params["attachments"] += f",{attachment_str}" if len(params["attachments"]) != 0 else attachment_str
         elif sticker_id:
             if sticker_id <= 0:

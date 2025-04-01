@@ -14,7 +14,7 @@ class AttachmentType(Enum):
     PAGE = "page"
     ALBUM = "album"
     PHOTOS_LIST = "photos_list"
-    MARKET = "market"
+    MARKET = "market_item"
     MARKET_ALBUM = "market_album"
     STICKER = "sticker"
     PRETTY_CARDS = "pretty_cards"

@@ -38,7 +38,7 @@ class GroupsMethods(SessionMixin):
         if future:
             params["future"] = future
         if market:
-            params["market"] = market
+            params["market_item"] = market
         if sort:
             params["sort"] = 6
         if offset:

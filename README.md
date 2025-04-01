@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.19
+Current Version is 0.2
 
 ---
 # Version 0.03
@@ -86,3 +86,8 @@ Completed Users methods. Some refactoring in core/response_middleware.py was don
 
 # Version 0.19
 Added a lot of new attachments types and some methods in Wall were released.
+
+---
+
+# Version 0.2
+Released a lot of new classes(and their subclasses) including Group, Attachments. Also some refactoring have done.

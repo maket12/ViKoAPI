@@ -1,8 +1,8 @@
-from vk_types.attachments.link.link_attributes.Price import ProductsPrice
+from vk_types.price.Price import Price
 
 
 class LinksProduct:
-    def __init__(self, price: ProductsPrice):
+    def __init__(self, price: Price):
         self.price = price
 
     def to_dict(self) -> dict:
