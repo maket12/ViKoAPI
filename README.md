@@ -1,7 +1,7 @@
 # ViKoAPI
 
 <p align="center">
-  <img src=".github/ViKoAPI main-logo.png" alt="ViKoAPI MainLogo" width="200"/>
+  <img src=".github/ViKoAPI main-logo.png" alt="ViKoAPI MainLogo"/>
 </p>
 
 An open-source framework for VK API
