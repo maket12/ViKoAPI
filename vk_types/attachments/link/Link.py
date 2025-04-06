@@ -1,18 +1,18 @@
 from vk_types.attachments.photo.Photo import Photo
-from vk_types.attachments.link.link_attributes.Product import LinksProduct
-from vk_types.attachments.link.link_attributes.Button import Button
+from vk_types.price.Price import Price
+from vk_types.button.Button import Button
 
 
 class Link:
     def __init__(self, url: str, title: str, caption: str, description: str, photo: Photo | None,
-                 product: LinksProduct | None, button: Button | None,
+                 price: Price | None, button: Button | None,
                  preview_page: str, preview_url: str):
         self.url = url
         self.title = title
         self.caption = caption
         self.description = description
         self.photo = photo
-        self.product = product
+        self.product = price
         self.button = button
         self.preview_page = preview_page
         self.preview_url = preview_url
@@ -25,7 +25,9 @@ class Link:
             "caption": self.caption,
             "description": self.description,
             "photo": self.photo.to_dict(),
-            "product": self.product.to_dict(),
+            "product": {
+                "price": self.product.to_dict()
+            },
             "button": self.button.to_dict(),
             "preview_page": self.preview_page,
             "preview_url": self.preview_url

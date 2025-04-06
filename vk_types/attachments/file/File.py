@@ -1,5 +1,5 @@
 from datetime import datetime
-from enums.attachments.file_type import FileType
+from enums.attachments.file.file_type import FileType
 from vk_types.attachments.file.file_attributes.Preview import FilePreview
 
 

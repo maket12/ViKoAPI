@@ -1,10 +1,10 @@
 from datetime import datetime
+from enums.attachments.market_item.market_item_availability import MarketItemAvailability
 from vk_types.price.Price import Price
 from vk_types.attachments.market_item.market_item_attributes.Dimensions import MarketItemDimensions
 from vk_types.attachments.market_item.market_item_attributes.Category import MarketItemCategory
 from vk_types.attachments.market_item.market_item_attributes.RejectInfo import MarketRejectInfo
 from vk_types.attachments.photo.Photo import Photo
-from enums.attachments.market_item_availability import MarketItemAvailability
 
 
 class MarketItem:

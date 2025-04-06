@@ -1,8 +1,5 @@
-from vk_types.comment.Comment import Comment
-
-
 class CommentsThread:
-    def __init__(self, count: int, items: list[Comment], can_post: bool, show_reply_button: bool,
+    def __init__(self, count: int, items: list["Comment"], can_post: bool, show_reply_button: bool,
                  groups_can_post: bool):
         self.count = count
         self.items = items

@@ -1,5 +1,5 @@
 import json
-from core.object_factory import ObjectFactory
+from core.object_factory.object_factory import ObjectFactory
 from errors.exceptions import *  # maybe replace and do 2 files with exceptions: response's and before response
 
 
@@ -7,6 +7,7 @@ class ResponseMiddleware:
     """
        Middleware for processing API responses and automatically converting JSON into objects.
     """
+
     def __init__(self, object_factory: ObjectFactory):
         self.object_factory = object_factory
 
@@ -67,12 +68,22 @@ class ResponseMiddleware:
                     raise PostCommentsAccessError(error_msg, request_params)
                 case 213:
                     raise StatusRepliesAccessError(error_msg, request_params)
+                case 214:
+                    raise AddingPostAccessError(error_msg, request_params)
+                case 220:
+                    raise TooManyRecipients(error_msg, request_params)
                 case 222:
                     raise HyperlinksForbidden(error_msg, request_params)
                 case 223:
                     raise TooManyReplies(error_msg, request_params)
+                case 224:
+                    raise TooManyAdsPosts(error_msg, request_params)
+                case 225:
+                    raise DonutDisabled(error_msg, request_params)
                 case 242:
                     raise TooManyFriends(error_msg, request_params)
+                case 243:
+                    raise CommentNotDeleted(error_msg, request_params)
                 case 703:
                     raise Disabled2FA(error_msg, request_params)
                 case 3102:
@@ -96,16 +107,16 @@ class ResponseMiddleware:
 
         elif first_part == "gifts":
             if second_part == "get":
-                return self.object_factory.create_gift_items(data.get("items"))
+                return self.object_factory.attachments.create_gift_items(data.get("items"))
             else:
                 return data
 
         elif first_part == "users":
             match second_part:
                 case "get" | "search" | "getFollowers":
-                    return self.object_factory.create_users(data.get("items"))
+                    return self.object_factory.user.create_users(data.get("items"))
                 case "getSubscriptions":
-                    return self.object_factory.create_subscriptions(data.get("items"))
+                    return self.object_factory.friends.create_subscriptions(data.get("items"))
                 case _:
                     return data
 
@@ -116,32 +127,32 @@ class ResponseMiddleware:
                 case "addList":
                     return data["list_id"]
                 case "getLists":
-                    return self.object_factory.create_friend_lists(data.get("items"))
+                    return self.object_factory.friends.create_friend_lists(data.get("items"))
                 case "getOnline":
-                    return self.object_factory.create_online_friends(data)
+                    return self.object_factory.friends.create_online_friends(data)
                 case "getRecent":
                     return data
                 case "areFriends":
-                    return self.object_factory.create_friendships(data)
+                    return self.object_factory.friends.create_friendships(data)
                 case "deleteAllRequests":
                     return
                 case "getMutual":
-                    return self.object_factory.create_mutual_friends(data)
+                    return self.object_factory.friends.create_mutual_friends(data)
                 case "getRequests":
-                    return self.object_factory.create_friend_requests(data.get("items"))
+                    return self.object_factory.friends.create_friend_requests(data.get("items"))
                 case "getSuggestions":
-                    return self.object_factory.create_users(data.get("items"))
+                    return self.object_factory.user.create_users(data.get("items"))
                 case "search":
-                    return self.object_factory.create_users(data.get("items"))
+                    return self.object_factory.user.create_users(data.get("items"))
                 case _:
                     return data
 
         elif first_part == "likes":
             match second_part:
                 case "add" | "delete":
-                    return self.object_factory.create_reactions(data.get("items"))
+                    return self.object_factory.likes.create_reactions(data.get("items"))
                 case "getList":
-                    return self.object_factory.create_likes_list(data.get("items"))
+                    return self.object_factory.likes.create_likes_list(data.get("items"))
                 case "isLiked":
                     return bool(data.get("liked")), bool(data.get("copied"))
 
@@ -154,12 +165,23 @@ class ResponseMiddleware:
 
         elif first_part == "wall":
             match second_part:
-                case "get":
-                    return self.object_factory.create_posts(data.get("items"))
+                case "get" | "getById" | "getReposts":
+                    if data.get("profiles") or data.get("groups"):
+                        return (
+                            self.object_factory.post.create_posts(data.get("items")),
+                            self.object_factory.user.create_users(data.get("profiles")) if data.get("profiles") else None,
+                            self.object_factory.groups.create_groups(data.get("groups")) if data.get("groups") else None
+                        )
+                    return self.object_factory.post.create_posts(data.get("items"))
                 case "wall.checkCopyrightLink" | "wall.closeComments":
                     return True
-                case "pin":
+                case ("pin" | "unpin" | "reportPost" | "reportComment" | "restore" | "restoreComment" | "openComments" |
+                      "editComment" | "delete" | "deleteComment"):
                     return
+                case "repost" | "post" | "edit":
+                    return data.get("post_id")
+                case "createComment":
+                    return data.get("comment_id"), data.get("parent_stack")
                 case _:
                     return data
 

@@ -1,8 +1,7 @@
 from datetime import datetime
 from vk_types.attachments.photo.Photo import Photo
-from enums.user.platform import UsersPlatform
-from enums.attachments.video_type import VideoType
-from enums.attachments.video_live_status import VideoLiveStatus
+from enums.attachments.video.video_type import VideoType
+from enums.attachments.video.video_live_status import VideoLiveStatus
 
 
 class Video:
@@ -10,12 +9,12 @@ class Video:
                  duration: int, image: list[Photo] | None,
                  first_frame: list[Photo] | None, created_unix: int,
                  adding_unix: int, views: int, local_views: int | None, comments: int,
-                 player: str, platform: UsersPlatform | None, can_add: bool, is_private: bool,
+                 player: str | None, platform: str | None, can_add: bool, is_private: bool,
                  is_favorite: bool, can_comment: bool, can_edit: bool, can_like: bool,
                  can_repost: bool, can_subscribe: bool, can_add_to_faves: bool,
                  can_attach_link: bool, width: int, height: int, user_id: int | None,
                  is_converting: int, is_added: bool, is_subscribed: bool, is_repeat: bool,
-                 is_processing: bool, video_type: VideoType, donut_balance: int,
+                 in_processing: bool, video_type: VideoType, donut_balance: int,
                  access_key: str | None, is_live: bool, is_upcoming: bool,
                  live_start_unix: int | None, live_status: VideoLiveStatus | None,
                  spectators: int, likes: int, is_liked: bool, reposts: int,
@@ -51,7 +50,7 @@ class Video:
         self.is_added = is_added
         self.is_subscribed = is_subscribed
         self.is_repeat = is_repeat
-        self.is_processing = is_processing
+        self.is_processing = in_processing
         self.video_type = video_type
         self.donut_balance = donut_balance
         self.access_key = access_key
@@ -83,7 +82,7 @@ class Video:
             "local_views": self.local_views,
             "comments": self.comments,
             "player": self.player,
-            "platform": self.platform.value if self.platform else None,
+            "platform": self.platform,
             "can_add": self.can_add,
             "is_private": self.is_private,
             "is_favorite": self.is_favorite,

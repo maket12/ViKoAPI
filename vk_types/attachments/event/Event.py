@@ -1,5 +1,5 @@
 from datetime import datetime
-from enums.attachments.event_status_member import EventStatusMember
+from enums.attachments.event.event_status_member import EventStatusMember
 
 
 class Event:

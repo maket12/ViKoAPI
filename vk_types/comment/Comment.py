@@ -1,36 +1,45 @@
 from datetime import datetime
 from vk_types.comment.comments_subclasses.Donut import CommentsDonut
 from vk_types.comment.comments_subclasses.Thread import CommentsThread
+from vk_types.attachments.Attachment import Attachment
 
 
 class Comment:
-    def __init__(self, comment_id: int, from_user_id: int, date_in_unix: int, text: str,
-                 donut: CommentsDonut, reply_to_user_id: int | None, reply_to_comment_id: int | None,
-                 attachments: object | None, parents_stack: list[int], thread: CommentsThread):
+    def __init__(self, comment_id: int, from_id: int, date_in_unix: int, text: str,
+                 donut: CommentsDonut | None, reply_to_user: int | None, reply_to_comment: int | None,
+                 attachments: list[Attachment] | None, parents_stack: list[int], thread: CommentsThread | None,
+                 is_liked: bool | None, can_like: bool | None, real_offset: int | None):
         """
         Represents a comment.
 
         :param comment_id: Unique identifier of the comment.
-        :param from_user_id: ID of the user(or group) who posted the comment.
+        :param from_id: ID of the user(or group) who posted the comment.
         :param date_in_unix: Timestamp of when the comment was created (UNIX format).
         :param text: Text content of the comment.
         :param donut: Object containing information about the "Donut" subscription status.
-        :param reply_to_user_id: ID of the user(or group) to whom this comment is a reply (if any).
-        :param reply_to_comment_id: ID of the comment to which this is a reply (if any).
+        :param reply_to_user: ID of the user(or group) to whom this comment is a reply (if any).
+        :param reply_to_comment: ID of the comment to which this is a reply (if any).
         :param attachments: Attachments included in the comment (if any).
         :param parents_stack: List of parent comment IDs (used for nested comment structures).
         :param thread: Object containing information about the comment thread.
+        :param is_liked: Did current user like this comment.
+        :param can_like: Can current user like this comment.
+        :param real_offset: Shows real offset in comments set.
         """
         self.comment_id = comment_id
-        self.from_user_id = from_user_id
+        self.from_id = from_id
         self.date = datetime.fromtimestamp(date_in_unix)
         self.text = text
         self.donut = donut
-        self.reply_to_user_id = reply_to_user_id
-        self.reply_to_comment_id = reply_to_comment_id
+        self.reply_to_user = reply_to_user
+        self.reply_to_comment = reply_to_comment
         self.attachments = attachments
         self.parents_stack = parents_stack
         self.thread = thread
+
+        self.is_liked = is_liked
+        self.can_like = can_like
+        self.real_offset = real_offset
 
     def to_dict(self) -> dict:
         """Returns the comment as a dictionary."""
@@ -42,8 +51,11 @@ class Comment:
             "donut": self.donut.to_dict() if self.donut else None,
             "reply_to_user_id": self.reply_to_user_id,
             "reply_to_comment_id": self.reply_to_comment_id,
-            "attachments": self.attachments,  # You might want to serialize attachments properly
+            "attachments": [a.to_dict() for a in self.attachments] if self.attachments else None,
             "parents_stack": self.parents_stack,
-            "thread": self.thread.to_dict() if self.thread else None
+            "thread": self.thread.to_dict() if self.thread else None,
+            "user_likes": self.is_liked,
+            "can_like": self.can_like,
+            "real_offset": self.real_offset
         }
 

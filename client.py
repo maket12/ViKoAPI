@@ -1,5 +1,5 @@
 from core.base_session import BaseSession
-from core.object_factory import ObjectFactory
+from core.object_factory.object_factory import ObjectFactory
 from core.response_middleware import ResponseMiddleware
 from methods.raw import RawMethod
 from methods.status import StatusMethods

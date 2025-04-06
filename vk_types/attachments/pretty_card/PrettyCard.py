@@ -3,7 +3,7 @@ from vk_types.button.Button import Button
 
 
 class PrettyCard:
-    def __init__(self, card_id: int, link_url: str, title: str, photos: list[Photo],
+    def __init__(self, card_id: int, link_url: str, title: str, photos: list[Photo] | None,
                  button: Button | None, price: str, old_price: str):
         self.id = card_id
         self.url = link_url

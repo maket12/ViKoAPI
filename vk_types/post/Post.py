@@ -103,7 +103,7 @@ class Post:
                 "is_reposted": self.is_reposted
             },
             "views": self.views,
-            "post_type": self.post_type.value,
+            "post_type": self.post_type.value if self.post_type else None,
             "post_source": self.post_source.to_dict() if self.post_source else None,
             "signer_user_id": self.signer_user_id,
             "attachments": [a.to_dict() for a in self.attachments] if self.attachments else None,

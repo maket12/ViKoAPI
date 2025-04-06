@@ -16,7 +16,7 @@ class StatusMethods(SessionMixin):
         if user_id:
             params = {"user_id": user_id}
         elif group_id:
-            if group_id < 0:
+            if group_id <= 0:
                 raise InvalidGroupID(group_id)
             params = {"group_id": group_id}
         else:

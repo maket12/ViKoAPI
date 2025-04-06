@@ -1,9 +1,9 @@
+from typing import Union
 from enums.attachments.type import AttachmentType
 from vk_types.attachments.photo import Photo
 from vk_types.attachments.audio.Audio import Audio
 from vk_types.attachments.file.File import File
 from vk_types.attachments.video.Video import Video
-from vk_types.attachments.voice_message.VoiceMessage import VoiceMessage
 from vk_types.attachments.graffiti.Graffiti import Graffiti
 from vk_types.attachments.link.Link import Link
 from vk_types.attachments.note.Note import Note
@@ -17,16 +17,21 @@ from vk_types.attachments.pretty_card.PrettyCard import PrettyCard
 from vk_types.attachments.event.Event import Event
 from vk_types.attachments.call.Call import Call
 from vk_types.attachments.gift_item.GiftItem import GiftItem
-from vk_types.post.Post import Post
+from errors.exceptions import ViKoAPIError
+
+
+AttachmentObjectType = Union[
+    Photo, Video, Audio, File, Graffiti,
+    Link, Note, MarketItem, Call, GiftItem,
+    Poll, WikiPage, Album, list[Photo], MarketAlbum,
+    Sticker, list[PrettyCard], Event
+]
 
 
 class Attachment:
     def __init__(
             self, attachment_type: AttachmentType,
-            attachment_object: Photo | Video | Audio | File | VoiceMessage | Graffiti |
-                               Link | Note | MarketItem | Post | Call | GiftItem |
-                               Poll | WikiPage | Album | list[Photo] | MarketAlbum |
-                               Sticker | list[PrettyCard] | Event | None,
+            attachment_object: AttachmentObjectType,
             owner_id: int | None, media_id: int | None):
         self.type = attachment_type
         self.object = attachment_object
@@ -36,7 +41,7 @@ class Attachment:
     def to_str(self) -> str | None:
         if self.owner_id and self.media_id:
             return f"{self.type}{self.owner_id}_{self.media_id}"
-        return None
+        raise ViKoAPIError("Not enough parameters to convert!")
 
     def to_dict(self) -> dict:
         """Returns the attachment object as a dictionary."""
@@ -45,7 +50,10 @@ class Attachment:
         }
 
         if isinstance(self.object, list):
-            result["object"] = [obj.to_dict() for obj in self.object]
+            objs = []
+            for o in self.object:
+                objs.append(o.to_dict())
+            result["object"] = result
         else:
             result["object"] = self.object.to_dict() if self.object else None
 

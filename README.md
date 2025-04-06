@@ -1,7 +1,7 @@
 # ViKoAPI
 An open-source framework for VK API
 
-Current Version is 0.21
+Current Version is 0.27
 
 ---
 # Version 0.03
@@ -96,3 +96,17 @@ Released a lot of new classes(and their subclasses) including Group, Attachments
 
 # Version 0.21
 Some refactoring was done. Also some methods(wall) were released and added new class - PrettyCard.
+
+---
+
+# Version 0.27
+Massive internal refactoring and type coverage improvements.
+
+- Added multiple new object factories (friends, users, posts, likes, etc.)
+- Completed support for VK attachment types: Photo, Video, File, Audio, Sticker, VoiceMessage and more
+- Released new types: PrettyCard, Donut, WikiPage, Poll
+- Unified and improved the architecture of vk_types package
+- Renamed/organized many internal modules for clarity
+- Enhanced error handling and middleware processing
+- Improved code typing and structure
+

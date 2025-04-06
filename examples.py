@@ -35,7 +35,13 @@ async def likes_test():
 
 
 async def user_test():
-    pass
+    posts = await vk_client.wall.get_posts()
+    for post in posts:
+        print(post.reposts_history[0].attachments)
+        print('\n')
+        print(post.to_dict())
+        print('\n')
+        print('\n')
     # friends = await vk_client.friends.get_my_recent()
     # print(friends)
     # gifts = await vk_client.gifts.get_my(count=5)
@@ -45,6 +51,6 @@ async def user_test():
 
 
 import asyncio
-asyncio.run(likes_test())
+asyncio.run(user_test())
 
 
