@@ -1,7 +1,12 @@
 # ViKoAPI
+
+<p align="center">
+  <img src=".github/ViKoAPI main-logo.png" alt="ViKoAPI MainLogo" width="200"/>
+</p>
+
 An open-source framework for VK API
 
-Current Version is 0.27
+Current Version is 0.28
 
 ---
 # Version 0.03
@@ -109,4 +114,9 @@ Massive internal refactoring and type coverage improvements.
 - Renamed/organized many internal modules for clarity
 - Enhanced error handling and middleware processing
 - Improved code typing and structure
+
+---
+
+# Version 0.28
+Added icons.
 

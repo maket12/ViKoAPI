@@ -51,6 +51,6 @@ async def user_test():
 
 
 import asyncio
-asyncio.run(user_test())
+asyncio.run(likes_test())
 
 
