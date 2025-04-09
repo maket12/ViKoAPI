@@ -6,7 +6,7 @@
 
 An open-source framework for VK API
 
-Current Version is 0.32
+Current Version is 0.33
 
 ---
 # Version 0.03
@@ -129,3 +129,8 @@ All Wall methods were added.
 
 # Version 0.32
 Docs methods are available. Added class FileTypeObject(which returns by "docs.get_types" method)
+
+---
+
+# Version 0.33
+A part of Photos methods was released.

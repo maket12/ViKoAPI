@@ -55,6 +55,24 @@ class InvalidStickerID(ViKoAPIError):
         self.value = value
 
 
+class InvalidPhotoID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid photo_id: {value}.")
+        self.value = value
+
+
+class InvalidTagID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid tag_id: {value}.")
+        self.value = value
+
+
+class InvalidAlbumID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid album_id: {value}.")
+        self.value = value
+
+
 class InvalidFileID(ViKoAPIError):
     def __init__(self, value: int):
         super().__init__(f"Invalid file_id: {value}.")

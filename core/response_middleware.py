@@ -199,6 +199,17 @@ class ResponseMiddleware:
                 case _:
                     return data
 
+        elif first_part == "photos":
+            match second_part:
+                case "search":
+                    return self.object_factory.attachments.create_photos(data.get("items"))
+                case "deleteComment":
+                    return bool(int(data))
+                case "confirmTag" | "delete" | "deleteAlbum":
+                    return
+                case _:
+                    return data
+
         elif first_part == "docs":
             match second_part:
                 case "get" | "get_by_id" | "search":
