@@ -45,12 +45,12 @@ class Comment:
         """Returns the comment as a dictionary."""
         return {
             "comment_id": self.comment_id,
-            "from_user_id": self.from_user_id,
+            "from_id": self.from_id,
             "date": self.date.isoformat(),
             "text": self.text,
             "donut": self.donut.to_dict() if self.donut else None,
-            "reply_to_user_id": self.reply_to_user_id,
-            "reply_to_comment_id": self.reply_to_comment_id,
+            "reply_to_user": self.reply_to_user,
+            "reply_to_comment": self.reply_to_comment,
             "attachments": [a.to_dict() for a in self.attachments] if self.attachments else None,
             "parents_stack": self.parents_stack,
             "thread": self.thread.to_dict() if self.thread else None,

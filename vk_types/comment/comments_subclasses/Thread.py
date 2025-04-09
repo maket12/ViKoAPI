@@ -1,5 +1,5 @@
 class CommentsThread:
-    def __init__(self, count: int, items: list["Comment"], can_post: bool, show_reply_button: bool,
+    def __init__(self, count: int, items: list["Comment"] | None, can_post: bool, show_reply_button: bool,
                  groups_can_post: bool):
         self.count = count
         self.items = items
@@ -11,7 +11,7 @@ class CommentsThread:
         """Returns the Thread as a dictionary."""
         return {
             "count": self.count,
-            "items": {item.to_dict() for item in self.items},
+            "items": {item.to_dict() for item in self.items} if self.items else None,
             "can_post": self.can_post,
             "show_reply_button": self.show_reply_button,
             "groups_can_post": self.groups_can_post

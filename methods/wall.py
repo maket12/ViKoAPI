@@ -242,24 +242,24 @@ class WallMethods(SessionMixin):
 
         return self.request_async("wall.getById", params)
 
-    def get_comment(
-            self, comment_id: int, owner_id: int | None = None, extended: bool = False,
-            fields: Union[list[GroupFields], list[UserFields]] | str | None = None
-    ) -> Coroutine[Any, Any, Comment | Tuple[Comment, list[User], list[Group]]]:
-        if comment_id <= 0:
-            raise NegativeValueError("comment_id", comment_id)
-
-        params = {"owner_id": owner_id, "comment_id": comment_id}
-
-        if extended:
-            params["extended"] = 1
-            fields_str = ""
-            for field in fields:
-                fields_str += ',' if fields_str else None
-                fields_str += str(field)
-            params["fields"] = fields_str
-
-        return self.request_async("wall.getComment", params)
+    # def get_comment(
+    #         self, comment_id: int, owner_id: int | None = None, extended: bool = False,
+    #         fields: Union[list[GroupFields], list[UserFields]] | str | None = None
+    # ) -> Coroutine[Any, Any, Comment | Tuple[Comment, list[User], list[Group]]]:
+    #     if comment_id <= 0:
+    #         raise NegativeValueError("comment_id", comment_id)
+    #
+    #     params = {"owner_id": owner_id, "comment_id": comment_id}
+    #
+    #     if extended:
+    #         params["extended"] = 1
+    #         fields_str = ""
+    #         for field in fields:
+    #             fields_str += ',' if fields_str else None
+    #             fields_str += str(field)
+    #         params["fields"] = fields_str
+    #
+    #     return self.request_async("wall.getComment", params)
 
     def get_comments(self, owner_id: int, post_id: int,
                      need_likes: bool = False, start_comment_id: int = None,
@@ -299,11 +299,11 @@ class WallMethods(SessionMixin):
         if extended:
             params["extended"] = True
 
-            fields_str = ""
-            for field in fields:
-                fields_str += ',' if fields_str else None
-                fields_str += str(field)
-            params["fields"] = fields_str
+            if fields:
+                if isinstance(fields, str):
+                    params["fields"] = fields
+                else:
+                    params["fields"] = ','.join(field.value for field in fields)
         if comment_id is not None:
             if comment_id < 0:
                 raise NegativeValueError("comment_id", comment_id)
@@ -316,7 +316,7 @@ class WallMethods(SessionMixin):
     def get_reposts(self, owner_id: int, post_id: int,
                     offset: int = None,
                     count: int = None) -> Coroutine[Any, Any, Tuple[list[Post], list[User], list[Group]]]:
-        params = {"owner_id": owner_id, }
+        params = {"owner_id": owner_id}
 
         if post_id <= 0:
             raise NegativeValueError("post_id", post_id)
@@ -333,17 +333,19 @@ class WallMethods(SessionMixin):
 
         return self.request_async("wall.getReposts", params)
 
-    def pin(self, post_id: int, owner_id: int | None) -> Coroutine[Any, Any, None]:
+    def pin(self, post_id: int, owner_id: int | None = None) -> Coroutine[Any, Any, None]:
         if post_id < 0:
             raise InvalidPostID(post_id)
 
-        params = {
-            "owner_id": owner_id,
-            "post_id": post_id
-        }
+        params = {}
+
+        if owner_id:
+            params["owner_id"] = owner_id
+        params["post_id"] = post_id
+
         return self.request_async("wall.pin", params)
 
-    def unpin(self, post_id: int, owner_id: int | None) -> Coroutine[Any, Any, None]:
+    def unpin(self, post_id: int, owner_id: int | None = None) -> Coroutine[Any, Any, None]:
         if post_id <= 0:
             raise InvalidPostID(post_id)
 
@@ -506,4 +508,39 @@ class WallMethods(SessionMixin):
 
     def parse_attached_link(self) -> None: pass
 
-    def search(self):pass
+    def search(self, q: str | None = None, owner_id: int | None = None, domain: str | None = None,
+               owners_only: bool = False, count: int = 20, offset: int | None = None, extended: bool = False,
+               fields: Union[list[GroupFields], list[UserFields]] | str = None
+               ) -> Coroutine[Any, Any, list[Post] | Tuple[list[Post], list[User], list[Group]]]:
+        params = {}
+
+        if q:
+            params["query"] = q
+
+        if owner_id:
+            params["owner_id"] = owner_id
+        elif domain:
+            params["domain"] = domain
+
+        params["owners_only"] = int(owners_only)
+
+        if count < 0:
+            raise NegativeValueError("count", count)
+        params["count"] = count
+
+        if offset:
+            if offset < 0:
+                raise NegativeValueError("offset", offset)
+            params["offset"] = offset
+
+        if extended:
+            params["extended"] = 1
+
+            if fields:
+                if isinstance(fields, str):
+                    params["fields"] = fields
+                else:
+                    params["fields"] = ','.join(field.value for field in fields)
+
+        return self.request_async("wall.search", params)
+

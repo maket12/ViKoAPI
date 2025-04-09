@@ -6,7 +6,7 @@
 
 An open-source framework for VK API
 
-Current Version is 0.28
+Current Version is 0.3
 
 ---
 # Version 0.03
@@ -120,3 +120,7 @@ Massive internal refactoring and type coverage improvements.
 # Version 0.28
 Added icons.
 
+---
+
+# Version 0.3
+All Wall methods were added.

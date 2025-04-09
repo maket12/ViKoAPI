@@ -1,7 +1,6 @@
 from client import ViKoClient
-from config import user_token
 
-# user_token = "INSERT_YOUR_TOKEN_HERE"
+user_token = "INSERT_YOUR_TOKEN_HERE"
 
 vk_client = ViKoClient(api_token=user_token)
 
@@ -19,8 +18,18 @@ async def status_tests():
 
 
 async def wall_tests():
-    wall_posts = await vk_client.wall.get()  # get your wall
-    other_wall_posts = await vk_client.wall.get(owner_id=1234)  # get users wall
+    wall_posts = await vk_client.wall.get_posts()  # get your wall
+    other_wall_posts = await vk_client.wall.get_posts(owner_id=1234)  # get users wall
+
+    comments = await vk_client.wall.get_comments(owner_id=1234, post_id=123)  # get comments
+
+    posts = await vk_client.wall.search(q="kinda text")  # search on your wall
+
+    await vk_client.wall.pin(post_id=123)  # pin something on your wall
+    await vk_client.wall.unpin(post_id=123)  # and simply unpin it
+
+    await vk_client.wall.delete(post_id=123)  # delete post from your wall
+    await vk_client.wall.delete_comment(comment_id=123)  # or comment
 
 
 async def friends_test():
@@ -28,29 +37,11 @@ async def friends_test():
 
 
 async def likes_test():
-    # is_liked = await vk_client.likes.check_post(post_id=2431591, owner_id=1)
+    is_liked = await vk_client.likes.check_post(post_id=2431591, owner_id=1)
     likes = await vk_client.likes.get(object_type="post", item_id=2431591, owner_id=1)
-    print(likes)
-    print(len(likes))
-
-
-async def user_test():
-    posts = await vk_client.wall.get_posts()
-    for post in posts:
-        print(post.reposts_history[0].attachments)
-        print('\n')
-        print(post.to_dict())
-        print('\n')
-        print('\n')
-    # friends = await vk_client.friends.get_my_recent()
-    # print(friends)
-    # gifts = await vk_client.gifts.get_my(count=5)
-
-    # for gif in gifts:
-    #     print(gif.datetime)
 
 
 import asyncio
-asyncio.run(likes_test())
+asyncio.run(wall_tests())
 
 

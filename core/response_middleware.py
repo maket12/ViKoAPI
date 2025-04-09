@@ -165,7 +165,7 @@ class ResponseMiddleware:
 
         elif first_part == "wall":
             match second_part:
-                case "get" | "getById" | "getReposts":
+                case "get" | "getById" | "getReposts" | "search":
                     if data.get("profiles") or data.get("groups"):
                         return (
                             self.object_factory.post.create_posts(data.get("items")),
@@ -173,6 +173,16 @@ class ResponseMiddleware:
                             self.object_factory.groups.create_groups(data.get("groups")) if data.get("groups") else None
                         )
                     return self.object_factory.post.create_posts(data.get("items"))
+                # case "getComment":
+                #     return self.object_factory.comments.create_comment(data.get())
+                case "getComments":
+                    if data.get("profiles") or data.get("groups"):
+                        return (
+                            self.object_factory.comments.create_comments(data.get("items")),
+                            self.object_factory.user.create_users(data.get("profiles")) if data.get("profiles") else None,
+                            self.object_factory.groups.create_groups(data.get("groups")) if data.get("groups") else None
+                        )
+                    return self.object_factory.comments.create_comments(data.get("items"))
                 case "wall.checkCopyrightLink" | "wall.closeComments":
                     return True
                 case ("pin" | "unpin" | "reportPost" | "reportComment" | "restore" | "restoreComment" | "openComments" |
