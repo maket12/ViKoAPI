@@ -65,7 +65,7 @@ class GroupsFactory:
     def create_group_cover(data: dict) -> GroupCover:
         mapped_data = {
             "is_enabled": data.get("enabled"),
-            "images": [AttachmentsFactory.create_photo(image) for image in data.get("images")]
+            "images": AttachmentsFactory.create_photos(data.get("images")) if data.get("images") else None
         }
         return GroupCover(**mapped_data)
 

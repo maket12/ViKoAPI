@@ -55,6 +55,12 @@ class InvalidStickerID(ViKoAPIError):
         self.value = value
 
 
+class InvalidFileID(ViKoAPIError):
+    def __init__(self, value: int):
+        super().__init__(f"Invalid file_id: {value}.")
+        self.value = value
+
+
 class UndefinedParameterValue(ViKoAPIError):
     def __init__(self, parameter_name: str, value: any):
         super().__init__(f"Parameter {parameter_name} cannot be {value}.")
@@ -278,6 +284,18 @@ class Disabled2FA(ViKoAPIResponseError):
     """You need to enable 2FA for this action."""
     def __init__(self, error_msg: str, request_params: dict = None):
         super().__init__(703, error_msg, request_params)
+
+
+class InvalidDocumentTitle(ViKoAPIResponseError):
+    """Invalid document title."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(1152, error_msg, request_params)
+
+
+class AccessDocumentDenied(ViKoAPIResponseError):
+    """Access to document is denied."""
+    def __init__(self, error_msg: str, request_params: dict = None):
+        super().__init__(1153, error_msg, request_params)
 
 
 class SpecifiedLinkIncorrect(ViKoAPIResponseError):

@@ -86,6 +86,10 @@ class ResponseMiddleware:
                     raise CommentNotDeleted(error_msg, request_params)
                 case 703:
                     raise Disabled2FA(error_msg, request_params)
+                case 1152:
+                    raise InvalidDocumentTitle(error_msg, request_params)
+                case 1153:
+                    raise AccessDocumentDenied(error_msg, request_params)
                 case 3102:
                     raise SpecifiedLinkIncorrect(error_msg, request_params)
                 case _:
@@ -97,7 +101,7 @@ class ResponseMiddleware:
 
         return response
 
-    def _convert_object(self, method: str, data: json):
+    def _convert_object(self, method: str, data):
         parts = method.split('.')
         first_part = parts[0]
         second_part = parts[1]
@@ -194,6 +198,20 @@ class ResponseMiddleware:
                     return data.get("comment_id"), data.get("parent_stack")
                 case _:
                     return data
+
+        elif first_part == "docs":
+            match second_part:
+                case "get" | "get_by_id" | "search":
+                    return self.object_factory.attachments.create_files(data.get("items"))
+                case "getTypes":
+                    return self.object_factory.attachments.create_file_types(data.get("items"))
+                case "add":
+                    return data
+                case "delete" | "edit":
+                    return
+                case _:
+                    return data
+
 
         else:
             return data

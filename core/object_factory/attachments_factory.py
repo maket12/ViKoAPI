@@ -14,6 +14,7 @@ from vk_types.attachments.audio.Audio import Audio
 from vk_types.attachments.voice_message.VoiceMessage import VoiceMessage
 from vk_types.attachments.file.File import File
 from vk_types.attachments.file.file_attributes.Preview import FilePreview
+from vk_types.attachments.file.FileTypeObject import FileTypeObject
 from vk_types.attachments.graffiti.Graffiti import Graffiti
 from vk_types.attachments.link.Link import Link
 from vk_types.attachments.note.Note import Note
@@ -114,11 +115,15 @@ class AttachmentsFactory:
             "user_id": data.get("user_id"),
             "text": data.get("text"),
             "unix_date": data.get("date"),
-            "sizes": [AttachmentsFactory.create_photo(size) for size in data.get("sizes")] if data.get("sizes") else None,
+            "sizes": AttachmentsFactory.create_photos(data.get("sizes")) if data.get("sizes") else None,
             "width": data.get("width"),
             "height": data.get("height")
         }
         return Photo(**mapped_data)
+
+    @staticmethod
+    def create_photos(items: list) -> list[Photo]:
+        return [AttachmentsFactory.create_photo(item) for item in items]
 
     @staticmethod
     def create_video(data: dict) -> Video:
@@ -128,9 +133,8 @@ class AttachmentsFactory:
             "title": data.get("title"),
             "description": data.get("description"),
             "duration": data.get("duration"),
-            "image": [AttachmentsFactory.create_photo(image) for image in data.get("image")] if data.get("image") else None,
-            "first_frame": [AttachmentsFactory.create_photo(frame) for frame in data.get("first_frame")] if data.get(
-                "first_frame") else None,
+            "image": AttachmentsFactory.create_photos(data.get("image")) if data.get("image") else None,
+            "first_frame": AttachmentsFactory.create_photos(data.get("first_frame")) if data.get("first_frame") else None,
             "created_unix": data.get("date"),
             "adding_unix": data.get("adding_date"),
             "views": data.get("views"),
@@ -206,7 +210,7 @@ class AttachmentsFactory:
     @staticmethod
     def create_file_preview(data: dict) -> FilePreview:
         mapped_data = {
-            "photo": data.get("photo"),
+            "photo": AttachmentsFactory.create_photos(data.get("photo").get("sizes")) if data.get("photo").get("sizes") else None,
             "graffiti": data.get("graffiti"),
             "voice_message": data.get("audio_message")
         }
@@ -222,10 +226,27 @@ class AttachmentsFactory:
             "extension": data.get("ext"),
             "url": data.get("url"),
             "unix_date": data.get("date"),
-            "file_type": FileType(data.get("type")).name,
+            "file_type": FileType(data.get("type")),
             "preview": AttachmentsFactory.create_file_preview(data.get("preview")) if data.get("preview") else None
         }
         return File(**mapped_data)
+
+    @staticmethod
+    def create_files(items: list) -> list[File]:
+        return [AttachmentsFactory.create_file(item) for item in items]
+
+    @staticmethod
+    def create_file_type(data: dict) -> FileTypeObject:
+        mapped_data = {
+            "type_id": data.get("id"),
+            "name": data.get("name"),
+            "count": data.get("count")
+        }
+        return FileTypeObject(**mapped_data)
+
+    @staticmethod
+    def create_file_types(items: list) -> list[FileTypeObject]:
+        return [AttachmentsFactory.create_file_type(item) for item in items]
 
     @staticmethod
     def create_graffiti(data: dict) -> Graffiti:
@@ -325,7 +346,7 @@ class AttachmentsFactory:
             "is_favorite": bool(data.get("is_favorite")),
             "sku": data.get("sku"),
             "reject_info": AttachmentsFactory.create_market_item_reject_info(data.get("reject_info")),
-            "photos": [AttachmentsFactory.create_photo(photo) for photo in data.get("photos")] if data.get("photos") else None,
+            "photos": AttachmentsFactory.create_photos(data.get("photos")) if data.get("photos") else None,
             "can_comment": bool(data.get("can_comment")) if data.get("can_comment") else None,
             "can_repost": bool(data.get("can_repost")) if data.get("can_comment") else None,
             "likes": data.get("likes").get("count") if data.get("count") else None,
@@ -419,7 +440,7 @@ class AttachmentsFactory:
             "color": data.get("color"),
             "width": data.get("width"),
             "height": data.get("height"),
-            "images": [AttachmentsFactory.create_photo(image) for image in data.get("images")] if data.get("images") else None,
+            "images": AttachmentsFactory.create_photos(data.get("images")) if data.get("images") else None,
             "points": AttachmentsFactory.create_poll_background_points(data.get("points")) if data.get("points") else None
         }
         return PollsBackground(**mapped_data)
@@ -506,7 +527,7 @@ class AttachmentsFactory:
             "card_id": data.get("id"),
             "link_url": data.get("link_url"),
             "title": data.get("title"),
-            "photos": [AttachmentsFactory.create_photo(image) for image in data.get("images")] if data.get("images") else None,
+            "photos": AttachmentsFactory.create_photos(data.get("images")) if data.get("images") else None,
             "button": AttachmentsFactory.create_button(data.get("button")) if data.get("button") else None,
             "price": data.get("price"),
             "old_price": data.get("price_old")
@@ -562,7 +583,7 @@ class AttachmentsFactory:
         elif data.get("album"):
             attachment_object = AttachmentsFactory.create_album(data.get("album"))
         elif data.get("photos_list"):
-            attachment_object = [AttachmentsFactory.create_photo(item) for item in data.get("photos_list").get("items")]
+            attachment_object = AttachmentsFactory.create_photos(data.get("photos_list").get("items")) if data.get("photos_list") else None
         elif data.get("market"):
             attachment_object = AttachmentsFactory.create_market_item(data.get("market"))
         elif data.get("market_album"):

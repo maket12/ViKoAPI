@@ -1,6 +1,7 @@
 from client import ViKoClient
+from config import user_token
 
-user_token = "INSERT_YOUR_TOKEN_HERE"
+# user_token = "INSERT_YOUR_TOKEN_HERE"
 
 vk_client = ViKoClient(api_token=user_token)
 
@@ -32,6 +33,17 @@ async def wall_tests():
     await vk_client.wall.delete_comment(comment_id=123)  # or comment
 
 
+async def docs_tests():
+    # you can simply get all your docs
+    files = await vk_client.docs.get()
+
+    # or get by id
+    files = await vk_client.docs.get_by_id(file_links=[(12345, 123), (12345, 125)])
+
+    # you can also get docs from global search
+    files = await vk_client.docs.search(q="Python", count=5)
+
+
 async def friends_test():
     suggestions = await vk_client.friends.get_my_suggestions(count=5)  # get first 5 friend suggestions
 
@@ -42,6 +54,6 @@ async def likes_test():
 
 
 import asyncio
-asyncio.run(wall_tests())
+asyncio.run(docs_tests())
 
 
