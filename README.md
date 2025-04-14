@@ -6,7 +6,7 @@
 
 An open-source framework for VK API
 
-Current Version is 0.33
+Current Version is 0.34
 
 ---
 # Version 0.03
@@ -134,3 +134,8 @@ Docs methods are available. Added class FileTypeObject(which returns by "docs.ge
 
 # Version 0.33
 A part of Photos methods was released.
+
+---
+
+# Version 0.34
+All Photos methods were released.

@@ -117,7 +117,14 @@ class AttachmentsFactory:
             "unix_date": data.get("date"),
             "sizes": AttachmentsFactory.create_photos(data.get("sizes")) if data.get("sizes") else None,
             "width": data.get("width"),
-            "height": data.get("height")
+            "height": data.get("height"),
+            "likes": data.get("likes").get("count") if data.get("likes") else None,
+            "is_liked": data.get("likes").get("user_likes") if data.get("likes") else None,
+            "comments": data.get("comments"),
+            "can_comment": bool(data.get("can_comment")) if data.get("can_comment") is not None else None,
+            "tags": data.get("tags"),
+            "reposts": data.get("reposts"),
+            "real_offset": data.get("real_offset")
         }
         return Photo(**mapped_data)
 

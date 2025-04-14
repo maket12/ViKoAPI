@@ -201,11 +201,24 @@ class ResponseMiddleware:
 
         elif first_part == "photos":
             match second_part:
-                case "search":
+                case "search" | "getAll" | "get":
                     return self.object_factory.attachments.create_photos(data.get("items"))
+                case "getAlbums":
+                    return self.object_factory.albums.create_albums(data.get("items"))
+                case "getComments":
+                    if data.get("profiles"):
+                        return (
+                            self.object_factory.comments.create_comments(data.get("items")),
+                            self.object_factory.user.create_users(data.get("profiles")),
+                            self.object_factory.groups.create_groups(data.get("groups"))
+                        )
+                    else:
+                        return self.object_factory.comments.create_comments(data.get("items"))
+                case "getAllComments":
+                    return self.object_factory.comments.create_comments(data.get("items"))
                 case "deleteComment":
                     return bool(int(data))
-                case "confirmTag" | "delete" | "deleteAlbum":
+                case "confirmTag" | "delete" | "deleteAlbum" | "restore" | "restoreComment":
                     return
                 case _:
                     return data

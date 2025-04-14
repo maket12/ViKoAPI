@@ -8,7 +8,8 @@ class Comment:
     def __init__(self, comment_id: int, from_id: int, date_in_unix: int, text: str,
                  donut: CommentsDonut | None, reply_to_user: int | None, reply_to_comment: int | None,
                  attachments: list[Attachment] | None, parents_stack: list[int], thread: CommentsThread | None,
-                 is_liked: bool | None, can_like: bool | None, real_offset: int | None):
+                 likes: int | None, is_liked: bool | None, can_like: bool | None,
+                 real_offset: int | None, object_id: int | None = None):
         """
         Represents a comment.
 
@@ -25,6 +26,7 @@ class Comment:
         :param is_liked: Did current user like this comment.
         :param can_like: Can current user like this comment.
         :param real_offset: Shows real offset in comments set.
+        :param object_id: ID of object from the comment was given(photo, video, etc.)
         """
         self.comment_id = comment_id
         self.from_id = from_id
@@ -37,9 +39,11 @@ class Comment:
         self.parents_stack = parents_stack
         self.thread = thread
 
+        self.likes = likes
         self.is_liked = is_liked
         self.can_like = can_like
         self.real_offset = real_offset
+        self.object_id = object_id
 
     def to_dict(self) -> dict:
         """Returns the comment as a dictionary."""
@@ -54,8 +58,12 @@ class Comment:
             "attachments": [a.to_dict() for a in self.attachments] if self.attachments else None,
             "parents_stack": self.parents_stack,
             "thread": self.thread.to_dict() if self.thread else None,
-            "user_likes": self.is_liked,
-            "can_like": self.can_like,
-            "real_offset": self.real_offset
+            "likes": {
+                "count": self.likes,
+                "user_likes": self.is_liked,
+                "can_like": self.can_like,
+            },
+            "real_offset": self.real_offset,
+            "object_id": self.object_id
         }
 

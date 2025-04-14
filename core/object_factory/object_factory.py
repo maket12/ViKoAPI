@@ -6,6 +6,7 @@ from core.object_factory.attachments_factory import AttachmentsFactory
 from core.object_factory.posts_factory import PostsFactory
 from core.object_factory.comments_factory import CommentsFactory
 from core.object_factory.chats_factory import ChatsFactory
+from core.object_factory.albums_factory import AlbumsFactory
 
 
 class ObjectFactory:
@@ -18,3 +19,4 @@ class ObjectFactory:
         self.post = PostsFactory()
         self.comments = CommentsFactory()
         self.chats = ChatsFactory()
+        self.albums = AlbumsFactory()

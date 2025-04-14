@@ -37,9 +37,11 @@ class CommentsFactory:
             "attachments": AttachmentsFactory.create_attachments(data.get("attachments")) if data.get("attachments") else None,
             "parents_stack": data.get("parents_stack"),
             "thread": CommentsFactory.create_comments_thread(data.get("thread")) if data.get("thread") else None,
-            "is_liked": bool(data.get("is_liked")),
-            "can_like": bool(data.get("can_like")),
+            "likes": data.get("likes").get("count") if data.get("likes") else None,
+            "is_liked": bool(data.get("likes").get("is_liked")) if data.get("likes") else None,
+            "can_like": bool(data.get("likes").get("can_like")) if data.get("likes") else None,
             "real_offset": data.get("real_offset"),
+            "object_id": data.get("pid")
         }
         return Comment(**mapped_data)
 
