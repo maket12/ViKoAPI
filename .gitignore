@@ -1,6 +1,8 @@
 # created by virtualenv automatically
 .venv
 
+.gitignore
+
 .idea/
 __pycache__/
 
