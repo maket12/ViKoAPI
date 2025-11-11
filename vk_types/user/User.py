@@ -23,6 +23,10 @@ from vk_types.user.user_subclasses.University import UsersUniversity
 
 
 class User:
+    """
+    Represents a VK User object.\n
+    Source: https://dev.vk.com/ru/reference/objects/user
+    """
     def __init__(self, user_id: int, first_name: str, last_name: str,
                  deactivated: IsDeactivated | None, is_closed: bool | None, can_access_closed: bool | None,
                  about: str | None, activities: str | None, birth_date: datetime, is_blacklisted: bool | None,
@@ -52,6 +56,9 @@ class User:
                  is_verified: bool | None, wall_default: WallDefault | None,
                  found_with: str | None):
         """
+        Represents the user object.\n
+        Source: https://dev.vk.com/ru/reference/objects/user.
+
         :param user_id:
         :param first_name:
         :param last_name:
@@ -223,3 +230,94 @@ class User:
             age -= 1
         return age
 
+    def to_dict(self) -> dict:
+        def _to_dict(value):
+            if value is None:
+                return None
+            if isinstance(value, list):
+                return [_to_dict(v) for v in value]
+            if hasattr(value, "to_dict"):
+                return value.to_dict()
+            return value
+
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "deactivated": self.deactivated.name if self.deactivated else None,
+            "is_closed": self.is_closed,
+            "can_access_closed": self.can_access_closed,
+            "about": self.about,
+            "activities": self.activities,
+            "bdate": self.birth_date.strftime("%d.%m.%Y") if self.birth_date else None,
+            "blacklisted": self.is_blacklisted,
+            "blacklisted_by_me": self.is_blacklisted_by_me,
+            "books": self.books,
+            "can_post": self.can_post,
+            "can_see_all_posts": self.can_see_all_posts,
+            "can_see_audio": self.can_see_audio,
+            "can_send_friend_request": self.can_send_friend_request,
+            "can_write_private_message": self.can_write_private_message,
+            "career": _to_dict(self.career),
+            "city": _to_dict(self.city),
+            "common_count": self.common_count,
+            "connections": _to_dict(self.connections),
+            "contacts": _to_dict(self.contacts),
+            "counters": _to_dict(self.counters),
+            "country": _to_dict(self.country),
+            "crop_photo": _to_dict(self.crop_photo),
+            "domain": self.domain,
+            "education": _to_dict(self.education),
+            "exports": _to_dict(self.exports),
+            "name_cases": _to_dict(self.name_cases),
+            "followers_count": self.followers_count,
+            "friend_status": self.friend_status.value if self.friend_status else None,
+            "games": self.games,
+            "has_mobile": self.has_mobile_phone,
+            "has_photo": self.has_photo,
+            "home_town": self.home_town,
+            "interests": self.interests,
+            "is_favorite": self.is_favorite,
+            "is_friend": self.is_friend,
+            "is_hidden_from_feed": self.is_hidden_from_feed,
+            "is_no_index": self.is_no_index,
+            "surname_cases": _to_dict(self.surname_cases),
+            "last_seen": _to_dict(self.last_seen),
+            "lists": self.lists,
+            "maiden_name": self.maiden_name,
+            "military": _to_dict(self.military),
+            "movies": self.movies,
+            "music": self.music,
+            "nickname": self.nickname,
+            "occupation": _to_dict(self.occupation),
+            "online": self.is_online,
+            "online_mobile": self.is_online_mobile,
+            "online_app": self.is_online_app,
+            "personal": _to_dict(self.personal),
+            "photo_50": self.photo_50,
+            "photo_100": self.photo_100,
+            "photo_200_orig": self.photo_200_orig,
+            "photo_200": self.photo_200,
+            "photo_400_orig": self.photo_400_orig,
+            "photo_id": self.photo_id,
+            "photo_max": self.photo_max,
+            "photo_max_orig": self.photo_max_orig,
+            "quotes": self.quotes,
+            "relatives": _to_dict(self.relatives),
+            "relation": self.relation.value if self.relation else None,
+            "relation_partner": _to_dict(self.relation_partner),
+            "schools": _to_dict(self.schools),
+            "screen_name": self.screen_name,
+            "sex": self.sex.value if self.sex else None,
+            "site": self.site,
+            "status": self.status,
+            "status_audio": self.status_audio,
+            "timezone": self.timezone,
+            "trending": self.trending,
+            "tv": self.tv,
+            "universities": _to_dict(self.universities),
+            "verified": self.is_verified,
+            "wall_default": self.wall_default.value if self.wall_default else None,
+            "found_with": self.found_with,
+            "age": self.age,
+        }

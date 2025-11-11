@@ -5,10 +5,7 @@ from vk_types.user.User import User
 class UsersFactory:
     @staticmethod
     def create_user(data: dict) -> User:
-        mapped_data = {
-            "found_with": data.get("found_with")
-        }
-        return User(**mapped_data)
+        return User(**data)
 
     @staticmethod
     def create_users(items: list) -> list[User]:

@@ -118,7 +118,7 @@ class ResponseMiddleware:
         elif first_part == "users":
             match second_part:
                 case "get" | "search" | "getFollowers":
-                    return self.object_factory.user.create_users(data.get("items"))
+                    return self.object_factory.user.create_users(data)
                 case "getSubscriptions":
                     return self.object_factory.friends.create_subscriptions(data.get("items"))
                 case _:
@@ -225,7 +225,7 @@ class ResponseMiddleware:
 
         elif first_part == "docs":
             match second_part:
-                case "get" | "get_by_id" | "search":
+                case "get" | "getById" | "search":
                     return self.object_factory.attachments.create_files(data.get("items"))
                 case "getTypes":
                     return self.object_factory.attachments.create_file_types(data.get("items"))
@@ -236,6 +236,15 @@ class ResponseMiddleware:
                 case _:
                     return data
 
+        elif first_part == "account":
+            match second_part:
+                case "getBanned":
+                    return (
+                        self.object_factory.user.create_users(data.get("profiles")),
+                        self.object_factory.groups.create_groups(data.get("groups"))
+                    )
+                case _:
+                    return None
 
         else:
             return data

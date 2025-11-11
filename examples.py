@@ -1,7 +1,6 @@
 from client import ViKoClient
-from config import user_token
 
-# user_token = "INSERT_YOUR_TOKEN_HERE"
+user_token = "INSERT_YOUR_TOKEN_HERE"
 
 vk_client = ViKoClient(api_token=user_token)
 
@@ -54,6 +53,4 @@ async def likes_test():
 
 
 import asyncio
-asyncio.run(docs_tests())
-
-
+asyncio.run(likes_test())

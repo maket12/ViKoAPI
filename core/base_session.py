@@ -1,4 +1,4 @@
-import requests
+import webbrowser
 import aiohttp
 from core.response_middleware import ResponseMiddleware
 
@@ -13,43 +13,83 @@ class BaseSession:
     BASE_URL = "https://api.vk.com/method/"
     OAUTH_URL = "https://oauth.vk.com/authorize"
 
-    def __init__(self, api_token: str, proxy: str = None, api_version: str = "5.199"):
+    def __init__(self, api_token: str | None = None, proxy: str | None = None, api_version: str = "5.199"):
         """
         :param api_token: Your access_token
         :param proxy: Your proxy in ? -- format: ip:login:password -- ?
         :param api_version: Don't change it! Methods can be not working!
         """
+        self.version = 0.34
         self.api_token = api_token
         self.proxy = proxy
         self.api_version = api_version
         self.middleware = None
+        self._proxy_checked = False
 
-        if self.proxy:
-            self.check_proxy()
+        self._authorize()
 
-    async def check_proxy(self, test_url: str = "https://www.google.com", timeout: int = 10):
+    def _authorize(self):
+        def welcome_info():
+            title = f"ViKoAPI {self.version}"
+            padding = 4
+            width = len(title) + padding * 2
+            border = "#" * (width + 4)
+            content_line = f"# {' ' * padding}{title}{' ' * padding} #"
+
+            print(border)
+            print(content_line)
+            print(border)
+
+        def auth_info():
+            import time
+
+            time.sleep(3)
+            print("\nYou will be redirected on unofficial page to get api-key.")
+            time.sleep(2)
+            print("Be sure that you choose correct option. It will depend how many methods you can call on which "
+                  "option you choose.")
+            print("Recommended: \"VK Admin\", \"vk.com\".\n")
+            time.sleep(4)
+
+            for i in range(5, 0, -1):
+                print(f"\rRedirecting in {i}...", end="", flush=True)
+                time.sleep(1)
+
+        welcome_info()
+        if not self.api_token:
+            auth_info()
+            webbrowser.open(url="https://vkhost.github.io")
+            self.api_token = input("\rEnter your api-token: ")
+
+    async def _ensure_proxy(self):
+        if self.proxy and not self._proxy_checked:
+            is_ok = await self.check_proxy()
+            if not is_ok:
+                raise ConnectionError("Proxy check failed: cannot reach test URL.")
+            self._proxy_checked = True
+
+    async def check_proxy(self, test_url: str = "https://www.google.com", timeout: int = 10) -> bool:
         try:
             connector = aiohttp.TCPConnector(ssl=False)
             async with aiohttp.ClientSession(connector=connector) as session:
                 async with session.get(test_url, proxy=self.proxy, timeout=timeout) as response:
                     if response.status == 200:
-                        return "ok"
+                        return True
                     else:
-                        raise ConnectionError
+                        raise False
         except Exception:
-            raise ConnectionError
+            raise False
 
     def set_middleware(self, middleware: ResponseMiddleware):
         self.middleware = middleware
 
-    # def _sync_request(self, method: str, params: dict):
-    #     params.update({"access_token": self.api_token, "v": self.api_version})
-    #     response = requests.get(self.BASE_URL + method, params=params)
-    #     return response.json()
-
     async def _async_request(self, method: str, params: dict):
+        await self._ensure_proxy()
         async with aiohttp.ClientSession(proxy=self.proxy) as session:
-            params.update({"access_token": self.api_token, "v": self.api_version})
+            params.update({
+                "access_token": self.api_token,
+                "v": self.api_version
+            })
             async with session.get(self.BASE_URL + method, params=params) as response:
                 data = await response.json()
                 return self.middleware.process(method, data) if self.middleware else data

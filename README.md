@@ -1,141 +1,127 @@
-# ViKoAPI
+# 🧩 ViKoAPI
 
 <p align="center">
   <img src=".github/ViKoAPI main-logo.png" alt="ViKoAPI MainLogo" width="50%"/>
 </p>
 
-An open-source framework for VK API
-
-Current Version is 0.34
-
----
-# Version 0.03
-Added class User(not full) and many subclasses.
+**ViKoAPI** is a modern, lightweight, and fully-featured framework for interacting with the [VK API](https://dev.vk.com/ru/reference).
+It provides a convenient interface for VK developers with automatic error handling, validation, and data class serialization.
 
 ---
 
-# Version 0.04
-Class User was completed.
+## 🚀 Key Features
+
+- 🔐 **Authorization** via `client.authorize()` — automatic token retrieval if not provided.
+- 🧠 **Full VK API error handling** — all API errors are processed and raised as custom exceptions.
+- 🧩 **Data classes** for all major VK objects (`User`, `Group`, `Message`, etc.).
+- ⚙️ **`.to_dict()`** method on all entities to obtain raw VK API response format.
+- 🧾 **Data validation** and type checking.
+- 🌐 **Proxy support** on client initialization.
+- 🧱 **Core modular architecture** for flexibility and extensibility.
 
 ---
 
-# Version 0.05
-Added class Comment and their subclasses, class Discussion, class VoiceMessage and class Note.
+## 📦 Installation
+
+```bash
+pip install git+https://github.com/maket12/ViKoAPI.git
+```
 
 ---
 
-# Version 0.06
-Added class Chat and their subclasses, class Post and their subclasses
+## 🧰 Basic Usage Example
+
+```python
+from vikoapi import ViKoClient
+
+# Authorization (token will be automatically retrieved and stored)
+client = ViKoClient(api_token="vk1.xxxx")
+
+# Get user information
+user = client.users.get(user_ids=[1])
+
+print(user.first_name, user.last_name)
+print(user.to_dict())
+```
 
 ---
 
-# Version 0.07
-Added exceptions based on VK API errors. Some refactoring have done.
+## ⚙️ Proxy Support
+
+```python
+client = ViKoClient(api_token="...", proxy="http://127.0.0.1:8080")
+```
 
 ---
 
-# Version 0.08
-Added class GiftItem and his subclass Gift. Added gift methods.
+## 🧠 Error Handling
+
+ViKoAPI wraps VK API responses into its own structured exceptions:
+
+```python
+from vikoapi.errors.exceptions import ViKoAPIResponseError, AuthorisationError
+
+try:
+    user = client.users.get(user_ids=-1)
+except ViKoAPIResponseError as e:
+    print(f"VK API error: {e.code} - {e.msg}")
+except AuthorisationError:
+    print("Authorization failed!")
+```
 
 ---
 
-# Version 0.09
-Some refactoring was done. Typing issues were fixed.
+## 🧩 Project Structure
+
+```
+ViKoAPI/
+├── core/                      # Framework core logic
+│   ├── object_factory/         # Object construction and management
+│   ├── base_session.py         # Core session class
+│   ├── response_middleware.py  # Response parsing and validation
+│   └── session_mixin.py        # Session mixins and extensions
+│
+├── enums/                     # Enumerations for VK object constants
+│
+├── errors/                    # Custom exception classes
+│   └── exceptions.py
+│
+├── methods/                   # VK API method handlers
+│
+├── vk_types/                  # Data classes representing VK API objects
+│   ├── album/
+│   ├── attachments/
+│   ├── button/
+│   ├── chat/
+│   ├── comment/
+│   ├── discussion/
+│   ├── friends/
+│   ├── group/
+│   ├── post/
+│   ├── price/
+│   ├── reaction/
+│   ├── user/
+│   └── voice_message/
+│
+└── README.md
+```
 
 ---
 
-# Version 0.1
-Added some exceptions, raw_methods are available.
+## 🧱 Architecture Overview
+
+- **`core/`** – The main framework engine (authorization, sessions, middleware).
+- **`methods/`** – VK API method implementations (users, groups, wall, messages, etc.).
+- **`vk_types/`** – Typed Python data models representing VK objects, each with `to_dict()` for serialization.
+- **`errors/`** – All VK and internal exceptions are defined here.
+- **`enums/`** – Enumerations for VK constants (e.g., `Sex`, `RelationStatus`, `Platform`, etc.).
 
 ---
 
-# Version 0.11
-Added proxies supporting.
+## 📄 License
+
+**MIT License** — feel free to use, modify, and distribute.
 
 ---
 
-# Version 0.12
-Released all Friends methods.
-
----
-
-# Version 0.13
-Some refactoring was done. Now methods are moved on files, each method class has own file.
-
----
-
-# Version 0.14
-All Likes methods was released.
-
----
-
-# Version 0.15
-Added some new methods in class Wall. New type Photo was released.
-
----
-
-# Version 0.16
-New type Audio was released.
-
----
-
-# Version 0.17
-Added new types(and their subtypes): File, Graffiti, Sticker, VoiceMessage and Link.
-
----
-
-# Version 0.18
-Completed Users methods. Some refactoring in core/response_middleware.py was done.
-
----
-
-# Version 0.19
-Added a lot of new attachments types and some methods in Wall were released.
-
----
-
-# Version 0.2
-Released a lot of new classes(and their subclasses) including Group, Attachments. Also some refactoring have done.
-
----
-
-# Version 0.21
-Some refactoring was done. Also some methods(wall) were released and added new class - PrettyCard.
-
----
-
-# Version 0.27
-Massive internal refactoring and type coverage improvements.
-
-- Added multiple new object factories (friends, users, posts, likes, etc.)
-- Completed support for VK attachment types: Photo, Video, File, Audio, Sticker, VoiceMessage and more
-- Released new types: PrettyCard, Donut, WikiPage, Poll
-- Unified and improved the architecture of vk_types package
-- Renamed/organized many internal modules for clarity
-- Enhanced error handling and middleware processing
-- Improved code typing and structure
-
----
-
-# Version 0.28
-Added icons.
-
----
-
-# Version 0.3
-All Wall methods were added.
-
----
-
-# Version 0.32
-Docs methods are available. Added class FileTypeObject(which returns by "docs.get_types" method)
-
----
-
-# Version 0.33
-A part of Photos methods was released.
-
----
-
-# Version 0.34
-All Photos methods were released.
+> Made with ❤️ by [maket12](https://github.com/maket12)
